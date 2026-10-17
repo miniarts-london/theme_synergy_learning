@@ -64,3 +64,27 @@ function theme_synergylearning_get_pre_scss(theme_config $theme): string {
 function theme_synergylearning_get_extra_scss(theme_config $theme): string {
     return theme_boost_get_extra_scss($theme);
 }
+
+/**
+ * Serves files uploaded through this theme's settings (the footer logo).
+ *
+ * @param stdClass $course Course object.
+ * @param stdClass|null $cm Course module object.
+ * @param context $context Context.
+ * @param string $filearea File area.
+ * @param array $args Extra arguments.
+ * @param bool $forcedownload Whether to force a download.
+ * @param array $options Additional options affecting the file serving.
+ * @return bool False if the file is not found; otherwise the file is sent and the script exits.
+ */
+function theme_synergylearning_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {
+    if ($context->contextlevel == CONTEXT_SYSTEM && $filearea === 'footerlogo') {
+        $theme = theme_config::load('synergylearning');
+        // Theme files are public and safe for browsers and proxies to cache.
+        if (!array_key_exists('cacheability', $options)) {
+            $options['cacheability'] = 'public';
+        }
+        return $theme->setting_file_serve($filearea, $args, $forcedownload, $options);
+    }
+    send_file_not_found();
+}
