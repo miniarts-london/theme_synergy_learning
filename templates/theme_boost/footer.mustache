@@ -24,6 +24,7 @@
     * the footer logo: the theme's "Footer logo" setting, falling back to core_admin | logocompact;
     * the copyright text, with the © symbol prepended statically. Nothing is output when the setting is empty;
     * optional footer content (rich text such as an address), when the admin has entered any.
+    The footer content comes first, with the logo and copyright at the very bottom.
     A Cookie settings pop-up is added with the band; a .btn-sl-cookie button in the footer content opens it.
 
     Example context (json):
@@ -52,14 +53,20 @@
     {{#output.footer_brand}}
     <div class="sl-footer" data-region="sl-footer">
         <div class="sl-footer__inner">
-            {{#logourl}}
-                <img class="sl-footer__logo" src="{{logourl}}" alt="{{logoalt}}">
-            {{/logourl}}
-            <div class="sl-footer__content">
+            {{! One column: the footer content first, then the logo and copyright at the very bottom.
+                The copyright is outside the content check, so it shows even without footer content. }}
+            {{#content}}
+                <div class="sl-footer__content">
+                    {{{content}}}
+                </div>
+            {{/content}}
+            <div class="sl-footer__brand">
+                {{#logourl}}
+                    <img class="sl-footer__logo" src="{{logourl}}" alt="{{logoalt}}">
+                {{/logourl}}
                 {{#copyright}}
                     <p class="sl-footer__copyright">&copy; {{{copyright}}}</p>
                 {{/copyright}}
-                {{{content}}}
             </div>
         </div>
     </div>

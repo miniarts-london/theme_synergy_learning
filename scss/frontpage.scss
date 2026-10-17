@@ -36,6 +36,14 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     color: var(--sl-body);
     background: var(--sl-page-bg);
 
+    // Keep the concept's 1140px measure on very wide screens (Bootstrap's xxl container is 1320px), so the
+    // catalogue, the about section, the hero form and the footer all share one left edge.
+    .container {
+        @include media-breakpoint-up(xxl) {
+            max-width: 1140px;
+        }
+    }
+
     &:focus {
         outline: none;
     }

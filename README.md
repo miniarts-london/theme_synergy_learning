@@ -25,7 +25,7 @@ This is a child theme of Boost for **Moodle 5.3**. It adds:
 |---|---|---|
 | General | Unneeded blocks | Kept from Boost. Moodle reads this setting from the active theme, so a child theme has to provide its own copy. |
 | Footer | Footer logo | SVG, PNG, JPG, WebP or GIF. If empty, the compact logo from *Appearance > Logos* is used; if that is empty too, no logo is shown. |
-| Footer | Footer content | Optional rich text, such as an address or contact details, shown between the logo and the copyright. Leave empty to show nothing. Treated as trusted admin HTML, so `tel:` links work. In the editor's HTML source view, `btn btn-primary` gives the yellow button and `btn btn-sl-cookie` the green outline Cookie settings button (see the example below). |
+| Footer | Footer content | Optional rich text, such as an address or contact details, shown in the footer, above the logo and copyright. Leave empty to show nothing. Treated as trusted admin HTML, so `tel:` links work. In the editor's HTML source view, `btn btn-primary` gives the yellow button and `btn btn-sl-cookie` the green outline Cookie settings button (see the example below). |
 | Footer | Copyright text | The template adds the `©`. A `©` or `(c)` typed by the admin is stripped so it never appears twice. Multi-language tags work. Empty means no copyright markup at all. |
 
 ## Site home content

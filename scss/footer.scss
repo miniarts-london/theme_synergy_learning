@@ -3,18 +3,32 @@
 .sl-footer {
     background: var(--sl-surface-3);
     color: var(--#{$prefix}body-color);
-    padding: 2rem 1.25rem;
+    padding: 2rem 0;
     font-size: .875rem;
 }
 
+// One left-aligned column: the footer content (contact, address, links, cookie settings), then the logo and
+// copyright at the very bottom. Lined up with the page container used by the sections above.
 .sl-footer__inner {
+    @include make-container();
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem 2rem;
-    max-width: 1140px;
-    margin-inline: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+
+    // Same widths as Bootstrap's .container, capped at the concept's 1140px like the landing sections.
+    @each $breakpoint, $width in $container-max-widths {
+        @include media-breakpoint-up($breakpoint) {
+            max-width: min($width, 1140px);
+        }
+    }
+}
+
+.sl-footer__brand {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1rem;
 }
 
 .sl-footer__logo {
@@ -25,9 +39,11 @@
     object-fit: contain;
 }
 
-.sl-footer__content {
-    flex: 1 1 16rem;
+.sl-footer__copyright {
+    margin: 0;
+}
 
+.sl-footer__content {
     > :last-child {
         margin-bottom: 0;
     }
