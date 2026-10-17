@@ -123,3 +123,26 @@
 .form-select:focus {
     box-shadow: 0 0 0 .25rem var(--sl-yellow);
 }
+
+// Links: replace Boost's pale highlight block (background fill plus underline shadow, in moodle/core.scss) with the
+// theme's focus ring, and only for keyboard focus (:focus-visible), so a mouse click leaves no highlight.
+// Keyboard users still need a visible focus indicator (WCAG 2.4.7), so it is replaced rather than removed.
+.aalink,
+#page-footer a:not([class]),
+.arrow_link,
+a:not([class]),
+.activityinstance > a {
+    &.focus,
+    &:focus {
+        outline: 0;
+        color: inherit;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--sl-line);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 .3rem var(--sl-yellow);
+    }
+}
