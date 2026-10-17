@@ -46,3 +46,8 @@ $font-family-sans-serif:
     "Segoe UI Symbol",
     "Noto Color Emoji";
 $headings-font-weight: 400;
+
+// Navigation bar: 96px tall at the top of the page, 72px once the page scrolls (see navbar.scss and amd/src/navbar.js).
+// Boost positions the page below the bar using this value.
+$navbar-height: 96px;
+$sl-navbar-height-compact: 72px;

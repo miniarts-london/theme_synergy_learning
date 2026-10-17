@@ -1,10 +1,40 @@
 // Synergy Learning – navbar, matching the concept: uppercase labels and a yellow underline on the current item.
 // Boost 5.3 renders the primary navigation as design-system "nav pills"; only their look is changed here.
 
+// The bar is tall at the top of the page and shrinks once the page scrolls: amd/src/navbar.js adds
+// body.sl-navbar-compact. The logo and the side drawers follow the same height.
+:root {
+    --sl-navbar-height: #{$navbar-height};
+}
+
+body.sl-navbar-compact {
+    --sl-navbar-height: #{$sl-navbar-height-compact};
+}
+
 .navbar.fixed-top {
+    height: var(--sl-navbar-height);
+    padding: 10px 20px;
     background-color: var(--sl-page-bg) !important; // stylelint-disable-line declaration-no-important
     box-shadow: 0 2px 1rem rgba(0, 0, 0, .06);
     border-bottom: 0;
+    transition: height var(--sl-duration) var(--sl-ease);
+
+    .navbar-brand .logo {
+        width: auto;
+        height: calc(var(--sl-navbar-height) - 20px);
+        max-height: none;
+        transition: height var(--sl-duration) var(--sl-ease);
+    }
+}
+
+// Boost pins the side drawers (course index, blocks) below the bar from lg; keep them attached as it shrinks.
+@include media-breakpoint-up(lg) {
+    .drawer-left,
+    .drawer-right {
+        top: var(--sl-navbar-height);
+        height: calc(100vh - var(--sl-navbar-height));
+        transition: top var(--sl-duration) var(--sl-ease), height var(--sl-duration) var(--sl-ease);
+    }
 }
 
 .primary-navigation .mds-nav-pill {
@@ -51,7 +81,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .primary-navigation .mds-nav-pill::after {
+    .primary-navigation .mds-nav-pill::after,
+    .navbar.fixed-top,
+    .navbar.fixed-top .navbar-brand .logo,
+    .drawer-left,
+    .drawer-right {
         transition: none;
     }
 }

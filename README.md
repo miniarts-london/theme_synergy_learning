@@ -36,13 +36,12 @@ This is a child theme of Boost for **Moodle 5.3**. It adds:
   3. **A generic icon.**
 - **Top menu.** The theme adjusts Moodle's top menu through the `primary_extend` navigation hook (`db/hooks.php`, `classes/hook_callbacks.php`), only while this theme is active:
   - it adds **Course catalogue**, which goes to the catalogue section of the site home. On the site home it scrolls there smoothly and moves focus to the section heading;
+  - it adds **My badges** (when badges are enabled) and **Events**, the calendar's upcoming events page. Visitors who are not logged in are asked to log in first, then taken on to the page. Each is shown as the current item on its own pages;
+  - it moves **Site administration** (admins only) to the end of the menu;
   - it hides **Home** from visitors who are not logged in (and guests): the site home is the log in page for them, and the logo already links to it.
 
-  For the rest of the concept's menu, add these lines to *Appearance > Advanced theme settings > Custom menu items*:
-  ```
-  My badges|/badges/mybadges.php
-  Events|/calendar/view.php?view=upcoming
-  ```
+  No *Custom menu items* are needed for the concept's menu. Remove any old Course catalogue, My badges or Events lines there, or they appear twice.
+- **Navigation bar.** 96px tall at the top of the page, with 10px/20px padding; it shrinks to 72px (logo included) once the page scrolls, and the side drawers stay attached below it. Set by `$navbar-height` in `scss/pre.scss`, `scss/navbar.scss` and `amd/src/navbar.js`. Motion is turned off for visitors who prefer reduced motion.
 - **Footer.** The footer band is full width on every page and stays at the bottom of the window on short pages.
 - **Text.** All page text is in language strings, so a site can change it under *Language > Language customisation* without code changes.
 - **Footer buttons.** Example for the Footer content setting, matching the concept:

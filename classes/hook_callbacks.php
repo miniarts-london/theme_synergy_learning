@@ -30,8 +30,10 @@ class hook_callbacks {
      * Adjusts the primary navigation (the top menu) while this theme is in use.
      *
      * - Adds "Course catalogue", which goes to the catalogue section of the site home (and, on the site home,
-     *   scrolls to it: see amd/src/frontpage.js). It is added here rather than as an admin "Custom menu item",
-     *   so every site that installs the theme gets it.
+     *   scrolls to it: see amd/src/frontpage.js), then "My badges" (when badges are enabled) and "Events" (the
+     *   upcoming events page). They are added here rather than as admin "Custom menu items", so every site that
+     *   installs the theme gets the concept's menu.
+     * - Moves "Site administration" to the end of the menu.
      * - Removes "Home" for visitors who are not logged in (and guests): the site home is the log in page for them,
      *   and the logo already links to it.
      *
@@ -40,7 +42,7 @@ class hook_callbacks {
      * @param primary_extend $hook The primary navigation hook.
      */
     public static function primary_extend(primary_extend $hook): void {
-        global $PAGE;
+        global $CFG, $PAGE;
 
         if ($PAGE->theme->name !== 'synergylearning') {
             return;
@@ -62,5 +64,41 @@ class hook_callbacks {
             null,
             'sl-catalogue'
         );
+
+        // My badges, when badges are enabled on the site.
+        if (!empty($CFG->enablebadges)) {
+            $primary->add(
+                get_string('mybadges', 'theme_synergylearning'),
+                new \core\url('/badges/mybadges.php'),
+                \navigation_node::TYPE_ROOTNODE,
+                null,
+                'sl-mybadges'
+            );
+        }
+
+        // Mark these items as the current one on their pages (Moodle can't match them by URL on its own).
+        $path = $PAGE->has_set_url() ? $PAGE->url->get_path() : '';
+        if (str_contains($path, '/calendar/')) {
+            $PAGE->set_primary_active_tab('sl-events');
+        } else if (str_contains($path, '/badges/')) {
+            $PAGE->set_primary_active_tab('sl-mybadges');
+        }
+
+        // Events: the calendar's upcoming events page. Visitors who are not logged in are asked to log in first,
+        // and Moodle then takes them on to the events page.
+        $primary->add(
+            get_string('events', 'calendar'),
+            new \core\url('/calendar/view.php', ['view' => 'upcoming']),
+            \navigation_node::TYPE_ROOTNODE,
+            null,
+            'sl-events'
+        );
+
+        // Move "Site administration" (admins only) to the end, after the items above.
+        $siteadmin = $primary->get('siteadminnode');
+        if ($siteadmin) {
+            $siteadmin->remove();
+            $primary->add_node($siteadmin);
+        }
     }
 }

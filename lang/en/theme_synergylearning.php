@@ -60,6 +60,7 @@ $string['loggingin'] = 'Logging in…';
 $string['loginrequired_password'] = 'Enter your password.';
 $string['loginrequired_username'] = 'Enter your username.';
 $string['lostpassword'] = 'Lost password?';
+$string['mybadges'] = 'My badges';
 $string['pluginname'] = 'Synergy Learning';
 $string['privacy:metadata'] = 'The Synergy Learning theme does not store any personal data.';
 $string['showpassword'] = 'Show password';
