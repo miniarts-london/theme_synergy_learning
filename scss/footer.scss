@@ -1,0 +1,73 @@
+// Synergy Learning – footer brand band (logo, footer content, copyright), shown on every page above Boost's footer.
+
+.sl-footer {
+    background: var(--sl-surface-3);
+    color: var(--#{$prefix}body-color);
+    padding: 2rem 1.25rem;
+    font-size: .875rem;
+}
+
+.sl-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    max-width: 1140px;
+    margin-inline: auto;
+}
+
+.sl-footer__logo {
+    display: block;
+    width: auto;
+    height: 3rem;
+    max-width: 12rem;
+    object-fit: contain;
+}
+
+.sl-footer__content {
+    flex: 1 1 16rem;
+
+    > :last-child {
+        margin-bottom: 0;
+    }
+
+    // Plain links only: buttons keep their own colours.
+    a:not(.btn) {
+        color: var(--#{$prefix}emphasis-color);
+    }
+}
+
+// Boost's footer element carries .bg-white; let the band and the page background show through instead.
+#page-footer:has(.sl-footer) {
+    background-color: transparent !important; // stylelint-disable-line declaration-no-important
+}
+
+// On the landing page the band runs the full width of the page, like the other sections.
+.sl-landing .sl-footer {
+    padding-block: 3rem;
+}
+
+// Cookie settings button for the Footer content setting: the concept's green outline, darkened from #68b631
+// (2.1:1, fails WCAG AA) to #3f7020 (5.0:1 on the footer grey; white on the hover fill is 5.9:1).
+// Use it in the editor's HTML as: <a class="btn btn-sl-cookie" href="...">Cookie settings</a>
+.btn-sl-cookie {
+    --sl-cookie-green: #3f7020;
+    --#{$prefix}btn-padding-y: .35rem;
+    --#{$prefix}btn-padding-x: .9rem;
+    --#{$prefix}btn-font-size: .8125rem;
+    --#{$prefix}btn-color: var(--sl-cookie-green);
+    --#{$prefix}btn-border-color: var(--sl-cookie-green);
+    --#{$prefix}btn-hover-bg: var(--sl-cookie-green);
+    --#{$prefix}btn-hover-color: #fff;
+    --#{$prefix}btn-hover-border-color: var(--sl-cookie-green);
+    --#{$prefix}btn-active-bg: var(--sl-cookie-green);
+    --#{$prefix}btn-active-color: #fff;
+    --#{$prefix}btn-active-border-color: var(--sl-cookie-green);
+}
+
+[data-bs-theme="dark"] .btn-sl-cookie {
+    --sl-cookie-green: #8fd16a;
+    --#{$prefix}btn-hover-color: #000;
+    --#{$prefix}btn-active-color: #000;
+}
