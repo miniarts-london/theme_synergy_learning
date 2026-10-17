@@ -58,15 +58,21 @@ body.sl-navbar-compact {
         display: none;
     }
 
-    &::after {
-        content: "";
-        position: absolute;
-        inset: auto 0 .6rem;
-        height: 4px;
-        background: var(--sl-yellow);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--sl-duration) var(--sl-ease);
+    // The underline sits just below the text, as in the concept, so it stays close to the words however tall
+    // the bar is (it is attached to the label, not to the full-height pill).
+    .mds-nav-pill__label {
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 -.45rem;
+            height: 4px;
+            background: var(--sl-yellow);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--sl-duration) var(--sl-ease);
+        }
     }
 
     &:hover:not([aria-disabled="true"]):not(.mds-nav-pill--selected),
@@ -74,14 +80,14 @@ body.sl-navbar-compact {
         background-color: transparent;
     }
 
-    &:hover::after,
-    &.mds-nav-pill--selected::after {
+    &:hover .mds-nav-pill__label::after,
+    &.mds-nav-pill--selected .mds-nav-pill__label::after {
         transform: scaleX(1);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .primary-navigation .mds-nav-pill::after,
+    .primary-navigation .mds-nav-pill__label::after,
     .navbar.fixed-top,
     .navbar.fixed-top .navbar-brand .logo,
     .drawer-left,
