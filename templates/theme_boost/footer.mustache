@@ -24,6 +24,7 @@
     * the footer logo: the theme's "Footer logo" setting, falling back to core_admin | logocompact;
     * the copyright text, with the © symbol prepended statically. Nothing is output when the setting is empty;
     * optional footer content (rich text such as an address), when the admin has entered any.
+    A Cookie settings pop-up is added with the band; a .btn-sl-cookie button in the footer content opens it.
 
     Example context (json):
     {
@@ -62,6 +63,37 @@
             </div>
         </div>
     </div>
+        {{! Cookie settings pop-up. The Cookie settings button in the Footer content opens it (see amd/src/footer.js);
+            without JavaScript the button stays a link to the site policies. }}
+        <div class="modal fade" id="cookie-modal" tabindex="-1" aria-labelledby="cookie-modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" data-cookie-form>
+                    <div class="modal-header">
+                        <h2 class="modal-title h5" id="cookie-modal-title">{{#str}}cookiesettings, theme_synergylearning{{/str}}</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{#str}}closebuttontitle, core{{/str}}"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{#str}}cookie_intro, theme_synergylearning, {{logoalt}}{{/str}}</p>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="cookie-essential" checked disabled>
+                            <label class="form-check-label" for="cookie-essential">
+                                <strong>{{#str}}cookie_essential, theme_synergylearning{{/str}}</strong> – {{#str}}cookie_essential_desc, theme_synergylearning{{/str}}
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="cookie-analytics" name="analytics">
+                            <label class="form-check-label" for="cookie-analytics">
+                                <strong>{{#str}}cookie_analytics, theme_synergylearning{{/str}}</strong> – {{#str}}cookie_analytics_desc, theme_synergylearning{{/str}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{#str}}cancel, core{{/str}}</button>
+                        <button type="submit" class="btn btn-primary">{{#str}}cookie_save, theme_synergylearning{{/str}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     {{/output.footer_brand}}
     <div data-region="footer-container-popover">
         {{#output.has_communication_links}}
@@ -131,6 +163,8 @@
     </div>
 </footer>
 {{#js}}
+require(['theme_synergylearning/footer'], (m) => m.init());
+
 require([
     'theme_boost/footer-popover',
     'core/copy_to_clipboard',

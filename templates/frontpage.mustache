@@ -155,6 +155,9 @@
 </body>
 </html>
 {{#js}}
+require(['theme_synergylearning/frontpage'], function(Frontpage) {
+    Frontpage.init();
+});
 M.util.js_pending('theme_boost/loader');
 require(['theme_boost/loader', 'theme_boost/drawer'], function(Loader, Drawer) {
     Drawer.init();
