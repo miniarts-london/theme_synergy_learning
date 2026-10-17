@@ -1,0 +1,70 @@
+// Synergy Learning – navbar, matching the concept: uppercase labels and a yellow underline on the current item.
+// Boost 5.3 renders the primary navigation as design-system "nav pills"; only their look is changed here.
+
+.navbar.fixed-top {
+    background-color: var(--sl-page-bg) !important; // stylelint-disable-line declaration-no-important
+    box-shadow: 0 2px 1rem rgba(0, 0, 0, .06);
+    border-bottom: 0;
+}
+
+.primary-navigation .mds-nav-pill {
+    position: relative;
+    height: 100%;
+    padding-inline: .1rem;
+    margin-inline-end: 1.25rem;
+    border-radius: 0;
+    color: var(--#{$prefix}emphasis-color);
+
+    .mds-nav-pill__label {
+        font-family: inherit;
+        font-size: .8125rem;
+        font-weight: 600;
+        letter-spacing: .01em;
+        text-transform: uppercase;
+    }
+
+    // The underline replaces the pill background and the indicator dot.
+    .mds-nav-pill__indicator {
+        display: none;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 .6rem;
+        height: 4px;
+        background: var(--sl-yellow);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--sl-duration) var(--sl-ease);
+    }
+
+    &:hover:not([aria-disabled="true"]):not(.mds-nav-pill--selected),
+    &.mds-nav-pill--selected {
+        background-color: transparent;
+    }
+
+    &:hover::after,
+    &.mds-nav-pill--selected::after {
+        transform: scaleX(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .primary-navigation .mds-nav-pill::after {
+        transition: none;
+    }
+}
+
+// The "Log in" link for visitors, styled like the navigation items.
+.navbar .login a {
+    font-size: .8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--#{$prefix}emphasis-color);
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

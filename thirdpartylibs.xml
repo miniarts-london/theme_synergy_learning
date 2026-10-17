@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<libraries>
+  <library>
+    <location>fonts/open-sans</location>
+    <name>Open Sans</name>
+    <description>Open Sans variable font (latin and latin-ext subsets, normal and italic), self-hosted.</description>
+    <version>Fontsource 5.1.0</version>
+    <license>OFL</license>
+    <licenseversion>1.1</licenseversion>
+    <repository>https://github.com/googlefonts/opensans</repository>
+    <copyrights>
+      <copyright>2020 The Open Sans Project Authors</copyright>
+    </copyrights>
+  </library>
+</libraries>

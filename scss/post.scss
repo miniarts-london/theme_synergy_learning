@@ -1,0 +1,125 @@
+// Synergy Learning – global styles (after Boost's preset, so every Bootstrap mixin is available).
+
+// Open Sans variable font, self-hosted from theme/synergylearning/fonts/open-sans/ (SIL OFL 1.1).
+// Self-hosting avoids sending visitors' IP addresses to Google, and is served by Moodle's font cache.
+@each $style in normal, italic {
+    @font-face {
+        font-family: "Open Sans";
+        font-style: $style;
+        font-weight: 300 800;
+        font-display: swap;
+        src: url("[[font:theme|open-sans/open-sans-latin-ext-wght-#{$style}.woff2]]") format("woff2");
+        unicode-range:
+            U+0100-02AF,
+            U+0304,
+            U+0308,
+            U+0329,
+            U+1E00-1E9F,
+            U+1EF2-1EFF,
+            U+2020,
+            U+20A0-20AB,
+            U+20AD-20C0,
+            U+2113,
+            U+2C60-2C7F,
+            U+A720-A7FF;
+    }
+    @font-face {
+        font-family: "Open Sans";
+        font-style: $style;
+        font-weight: 300 800;
+        font-display: swap;
+        src: url("[[font:theme|open-sans/open-sans-latin-wght-#{$style}.woff2]]") format("woff2");
+        unicode-range:
+            U+0000-00FF,
+            U+0131,
+            U+0152-0153,
+            U+02BB-02BC,
+            U+02C6,
+            U+02DA,
+            U+02DC,
+            U+0304,
+            U+0308,
+            U+0329,
+            U+2000-206F,
+            U+20AC,
+            U+2122,
+            U+2191,
+            U+2193,
+            U+2212,
+            U+2215,
+            U+FEFF,
+            U+FFFD;
+    }
+}
+
+// Brand tokens as custom properties, re-pointed for Boost's (experimental) dark colour mode.
+:root,
+[data-bs-theme="light"] {
+    --sl-yellow: #{$sl-yellow};
+    --sl-on-yellow: #000;
+    --sl-ink: #{$sl-ink};
+    --sl-body: #{$sl-body};
+    --sl-surface-1: #{$sl-surface-1};
+    --sl-surface-2: #{$sl-surface-2};
+    --sl-surface-3: #{$sl-surface-3};
+    --sl-card-bg: #fff;
+    --sl-page-bg: #fff;
+    --sl-line: #000;
+    --sl-shadow: 0 0 1.25rem rgba(0, 0, 0, .06);
+    --sl-shadow-hover: 0 1rem 2rem rgba(0, 0, 0, .12);
+    --sl-ease: cubic-bezier(.2, .7, .2, 1);
+    --sl-duration: 250ms;
+    --sl-error: #b00020;
+}
+
+[data-bs-theme="dark"] {
+    --sl-ink: var(--#{$prefix}emphasis-color);
+    --sl-body: var(--#{$prefix}body-color);
+    --sl-surface-1: var(--#{$prefix}tertiary-bg);
+    --sl-surface-2: var(--#{$prefix}secondary-bg);
+    --sl-surface-3: var(--#{$prefix}tertiary-bg);
+    --sl-card-bg: var(--#{$prefix}secondary-bg);
+    --sl-page-bg: var(--#{$prefix}body-bg);
+    --sl-line: var(--#{$prefix}emphasis-color);
+    --sl-shadow: 0 0 0 1px var(--#{$prefix}border-color);
+    --sl-shadow-hover: 0 1rem 2rem rgba(0, 0, 0, .5);
+    --sl-error: #ff8a80;
+    --#{$prefix}link-color-rgb: 255, 255, 255;
+    --#{$prefix}link-hover-color-rgb: 255, 255, 255;
+}
+
+// `.text-primary` would be yellow on white: use Bootstrap's AA-safe emphasis shade instead.
+.text-primary {
+    color: var(--#{$prefix}primary-text-emphasis) !important; // stylelint-disable-line declaration-no-important
+}
+
+// Moodle's preset forces white text on a primary-coloured dropdown hover, which is unreadable on yellow.
+.dropdown-menu {
+    --#{$prefix}dropdown-link-hover-color: #000;
+    --#{$prefix}dropdown-link-active-color: #000;
+}
+
+// Primary buttons: yellow with black text, inverting on hover (as on the concept's log in button).
+.btn-primary {
+    --#{$prefix}btn-color: #000;
+    --#{$prefix}btn-hover-bg: #000;
+    --#{$prefix}btn-hover-border-color: #000;
+    --#{$prefix}btn-hover-color: #{$sl-yellow};
+    --#{$prefix}btn-active-bg: #222;
+    --#{$prefix}btn-active-border-color: #222;
+    --#{$prefix}btn-active-color: #{$sl-yellow};
+    --#{$prefix}btn-disabled-color: #000;
+}
+
+[data-bs-theme="dark"] .btn-primary {
+    --#{$prefix}btn-hover-bg: #fff;
+    --#{$prefix}btn-hover-border-color: #fff;
+    --#{$prefix}btn-hover-color: #000;
+}
+
+// One high-contrast focus indicator on every surface: black outline with a yellow halo.
+.btn:focus-visible,
+.form-control:focus,
+.form-select:focus {
+    box-shadow: 0 0 0 .25rem var(--sl-yellow);
+}

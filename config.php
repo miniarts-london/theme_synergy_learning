@@ -17,7 +17,7 @@
 /**
  * Theme configuration for the Synergy Learning theme.
  *
- * Step 1: a bare child of Boost. It looks and behaves exactly like Boost.
+ * Step 2: a child of Boost with its own SCSS (brand colours, Open Sans, navigation bar).
  *
  * @package    theme_synergylearning
  * @copyright  2026 Kaori Nishimura
@@ -26,15 +26,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . '/lib.php');
+
 $THEME->name = 'synergylearning';
 $THEME->parents = ['boost'];
 
-// A child theme doesn't inherit its parent's SCSS, so for now it borrows Boost's (step 2 replaces this).
+// All CSS is produced by SCSS: Boost's preset wrapped by this theme's pre/post SCSS (see lib.php).
 $THEME->sheets = [];
 $THEME->editor_sheets = [];
+$THEME->editor_scss = ['editor'];
+$THEME->usefallback = true;
 $THEME->scss = function (theme_config $theme): string {
-    return theme_boost_get_main_scss_content($theme);
+    return theme_synergylearning_get_main_scss_content($theme);
 };
+$THEME->prescsscallback = 'theme_synergylearning_get_pre_scss';
+$THEME->extrascsscallback = 'theme_synergylearning_get_extra_scss';
 
 // Only layouts cascade from the parent theme. These properties don't, so they repeat Boost's values.
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
