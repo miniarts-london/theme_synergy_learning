@@ -15,7 +15,10 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * English strings for the Synergy Learning theme. Keep them in alphabetical order.
+ * English strings for the Synergy Learning theme.
+ *
+ * Front page copy lives here so it can be changed per site through
+ * Site administration > Language > Language customisation, without touching code.
  *
  * @package    theme_synergylearning
  * @copyright  2026 Kaori Nishimura
@@ -24,8 +27,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['choosereadme'] = 'Synergy Learning is a child theme of Boost.';
+$string['about_text'] = 'A pioneer in ophthalmic lens technology, Nikon Lenswear supports premium independent opticians across the UK to grow and differentiate their business.';
+$string['about_title'] = 'About Nikon Lenswear UK';
+$string['banner_alt'] = 'MyLearning: your personal development portal for limitless learning.';
+$string['capslockon'] = 'Caps Lock is on';
+$string['catalogue_empty'] = 'No course categories have been created yet.';
+$string['catalogue_title'] = 'Course catalogue';
+$string['catalogue_viewall'] = 'View all courses';
+$string['choosereadme'] = 'Synergy Learning is a child theme of Boost. It adds a branded site home with a log in panel, a course catalogue built from your top-level course categories and an about section, plus a footer with a configurable logo and copyright notice.';
 $string['configtitle'] = 'Synergy Learning';
+$string['contactus'] = 'Contact us';
 $string['copyright'] = 'Copyright text';
 $string['copyright_desc'] = 'Text shown in the footer of every page, after a © symbol which is added automatically (for example "2026 Nikon Optical Ltd. All rights reserved."). Leave empty to show nothing. Multi-language tags are supported.';
 $string['footercontent'] = 'Footer content';
@@ -34,4 +45,21 @@ $string['footerlogo'] = 'Footer logo';
 $string['footerlogo_desc'] = 'Logo shown in the footer of every page. If no image is uploaded, the compact logo from Site administration > Appearance > Logos is used instead.';
 $string['footersettings'] = 'Footer';
 $string['generalsettings'] = 'General';
+$string['gotodashboard'] = 'Go to your dashboard';
+$string['hidepassword'] = 'Hide password';
+$string['loggingin'] = 'Logging in…';
+$string['loginrequired_password'] = 'Enter your password.';
+$string['loginrequired_username'] = 'Enter your username.';
+$string['lostpassword'] = 'Lost password?';
 $string['pluginname'] = 'Synergy Learning';
+$string['privacy:metadata'] = 'The Synergy Learning theme does not store any personal data.';
+$string['showpassword'] = 'Show password';
+$string['sitehomenotice'] = 'The MyLearning landing page is shown on the site home, which visitors cannot currently reach. To show it, turn on <a href="{$a->enablemyhome}">Enable Home</a> and turn off <a href="{$a->forcelogin}">Force users to log in</a>.';
+$string['video_duration'] = '1:25';
+$string['video_play'] = 'Play video';
+$string['video_unavailable'] = 'Video not available';
+$string['video_unavailable_desc'] = 'The video file has not been added yet.';
+$string['viewcourses'] = 'View courses';
+$string['viewcoursesin'] = 'View courses in {$a}';
+$string['welcome'] = 'Welcome to';
+$string['welcomeback'] = 'Welcome back, {$a}';

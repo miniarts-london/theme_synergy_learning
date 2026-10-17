@@ -37,6 +37,18 @@ if ($ADMIN->fulltree) {
         get_string('generalsettings', 'theme_synergylearning')
     );
 
+    // Moodle 5.3 ships with "Enable Home" off and "Force users to log in" on; either one hides the site home,
+    // and with it this theme's landing page. Tell the admin, with links to both settings.
+    if (empty($CFG->enablemyhome) || !empty($CFG->forcelogin)) {
+        $page->add(new admin_setting_description(
+            'theme_synergylearning/sitehomenotice',
+            '',
+            $OUTPUT->notification(get_string('sitehomenotice', 'theme_synergylearning', [
+                'enablemyhome' => (new \core\url('/admin/settings.php', ['section' => 'navigation']))->out(false),
+                'forcelogin' => (new \core\url('/admin/settings.php', ['section' => 'loginsettings']))->out(false),
+            ]), \core\output\notification::NOTIFY_WARNING, false)
+        ));
+    }
     $setting = new admin_setting_configtext(
         'theme_synergylearning/unaddableblocks',
         get_string('unaddableblocks', 'theme_boost'),

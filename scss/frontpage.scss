@@ -1,0 +1,658 @@
+// Synergy Learning – site home landing sections (hero, catalogue, about).
+// Ported from the Task 1 static page; class names are prefixed `sl-` to avoid clashes with core.
+
+// Let the landing sections run edge to edge inside Boost's padded #page.
+.sl-landing #page.drawers {
+    padding-left: 0;
+    padding-right: 0;
+    background: var(--sl-page-bg);
+
+    > .main-inner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+// When the regular site home content is empty (the usual case for visitors), collapse its box so the
+// landing sections run straight into the footer. #maincontent stays in the DOM for Moodle's skip link.
+$sl-site-home-content: '#page-header, .drawer-toggles button, #user-notifications > *, [role="main"] > :not(#maincontent, br)';
+
+.sl-landing #topofscroll:not(:has(#{$sl-site-home-content})) {
+    height: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+// The footer spans the full width on the landing page.
+.sl-landing #page.drawers #page-footer.footer-popover {
+    max-width: none;
+    border-radius: 0;
+}
+
+.sl-landing-sections {
+    color: var(--sl-body);
+    background: var(--sl-page-bg);
+
+    &:focus {
+        outline: none;
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: var(--sl-ink);
+        font-weight: 300;
+    }
+}
+
+// Shared arrow icon in buttons.
+.sl-btn-icon {
+    flex: none;
+}
+
+// ---------------------------------------------------------------------------- Hero
+.sl-hero__panel {
+    display: flex;
+    align-items: center;
+    background: var(--sl-surface-1);
+}
+
+.sl-hero__form-wrap {
+    width: 100%;
+    max-width: 24rem;
+    margin-inline: auto;
+    padding: 3rem 1.25rem;
+
+    // Line the form up with the left edge of the page container used by the sections below.
+    // Percentages here are of the half-width column, so 100% - (container width / 2) is that edge.
+    @include media-breakpoint-up(lg) {
+        margin-left: unquote("max(1.5rem, calc(100% - 480px + .75rem))");
+        margin-right: 0;
+        padding: 4rem 1.5rem 4rem 0;
+    }
+
+    @include media-breakpoint-up(xl) {
+        margin-left: unquote("max(1.5rem, calc(100% - 570px + .75rem))");
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .sl-hero__row {
+        min-height: 34.5rem;
+    }
+}
+
+.sl-hero__title {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 1.75rem;
+}
+
+.sl-hero__eyebrow {
+    display: block;
+    font-size: .9375rem;
+    color: var(--sl-body);
+    margin-bottom: .1rem;
+}
+
+.sl-hero__media {
+    position: relative;
+    overflow: hidden;
+    background: #0b1820;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2 / 1;        // Below lg: show the whole banner so its baked-in text is never cropped.
+        object-fit: cover;
+        object-position: center;
+
+        @include media-breakpoint-down(sm) {
+            aspect-ratio: 1 / 1;    // Phones: crop in so the tagline stays legible.
+        }
+
+        @include media-breakpoint-up(lg) {
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            aspect-ratio: auto;
+        }
+    }
+}
+
+.sl-hero__actions {
+    display: grid;
+    gap: 1rem;
+}
+
+.sl-hero__secondary {
+    justify-self: start;
+    padding-block: .5rem;
+}
+
+// ---------------------------------------------------------------------------- Log in form
+.sl-login__field {
+    margin-bottom: 1.75rem;
+}
+
+.sl-login .form-label {
+    font-size: .9375rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--sl-ink);
+    margin-bottom: .25rem;
+}
+
+// Underlined fields as per the concept; 2px line and a focus fill keep the affordance clear.
+.sl-login .form-control {
+    border: 0;
+    border-bottom: 2px solid var(--sl-line);
+    border-radius: 0;
+    background-color: transparent;
+    padding: .7rem .25rem;
+    font-size: 1rem;
+    color: var(--#{$prefix}emphasis-color);
+    transition: background-color var(--sl-duration), border-color var(--sl-duration);
+
+    &:hover {
+        background-color: rgba(var(--#{$prefix}emphasis-color-rgb), .03);
+    }
+
+    &:focus {
+        background-color: var(--#{$prefix}body-bg);
+        border-bottom-color: var(--sl-line);
+        box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-yellow);
+    }
+
+    &.is-invalid {
+        border-bottom-color: var(--sl-error);
+        background-image: none;
+        padding-right: .25rem;
+    }
+}
+
+.sl-login .invalid-feedback {
+    color: var(--sl-error);
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+.sl-password {
+    position: relative;
+
+    .form-control {
+        padding-right: 3rem;
+    }
+
+    &:has(.is-invalid) + .invalid-feedback {
+        display: block;
+    }
+}
+
+.sl-password__toggle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+    width: 2.75rem;                 // 44px target.
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: var(--sl-ink);
+
+    .sl-icon-eye-off {
+        display: none;
+    }
+
+    &[aria-pressed="true"] {
+        .sl-icon-eye {
+            display: none;
+        }
+
+        .sl-icon-eye-off {
+            display: block;
+        }
+    }
+}
+
+.sl-capslock {
+    margin: .4rem 0 0;
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--sl-ink);
+
+    &::before {
+        content: "⇪ ";
+    }
+}
+
+.sl-login__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    min-height: 3rem;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+
+    .spinner-border {
+        width: 1.1rem;
+        height: 1.1rem;
+        border-width: .15em;
+    }
+}
+
+.sl-login__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1.5rem;
+    margin-top: 1rem;
+    font-size: .9375rem;
+
+    a {
+        color: var(--sl-ink);
+        text-decoration: none;
+        padding-block: .5rem;
+        white-space: nowrap;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.sl-login__idps {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--#{$prefix}border-color);
+}
+
+.sl-login__idps-label {
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+// ---------------------------------------------------------------------------- Catalogue
+.sl-catalogue {
+    padding: 4rem 0 4.5rem;
+
+    @include media-breakpoint-up(lg) {
+        padding-bottom: 5.5rem;
+    }
+}
+
+.sl-section-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+    padding-bottom: .5rem;
+    border-bottom: 4px solid var(--sl-yellow);
+    margin-bottom: 2.25rem;
+
+    h2 {
+        margin: 0;
+        font-size: 1.625rem;
+
+        @include media-breakpoint-up(lg) {
+            font-size: 2rem;
+        }
+    }
+}
+
+.sl-section-title__link {
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+.sl-catalogue__grid {
+    margin-bottom: 0;
+}
+
+.sl-card {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem 1.5rem;
+    background: var(--sl-card-bg);
+    box-shadow: var(--sl-shadow);
+    text-align: center;
+    transition:
+        background-color var(--sl-duration) var(--sl-ease),
+        transform var(--sl-duration) var(--sl-ease),
+        box-shadow var(--sl-duration) var(--sl-ease);
+
+    @include media-breakpoint-up(xl) {
+        min-height: 20.5rem;
+    }
+}
+
+.sl-card__title {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 2.5em;              // Keeps icons aligned across one- and two-line titles.
+}
+
+.sl-card__icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    margin-block: auto;
+    transition: transform var(--sl-duration) var(--sl-ease);
+}
+
+// Uploaded images keep their shape inside the icon box.
+.sl-card__icon--custom {
+    object-fit: contain;
+}
+
+// Only the theme's black line icons are inverted in dark mode; uploaded images keep their colours.
+[data-bs-theme="dark"] .sl-card__icon:not(.sl-card__icon--custom) {
+    filter: invert(1);
+}
+
+.sl-card__btn {
+    --#{$prefix}btn-padding-y: .55rem;
+    --#{$prefix}btn-padding-x: 1.1rem;
+    --#{$prefix}btn-font-size: .8125rem;
+    --#{$prefix}btn-color: var(--sl-line);
+    --#{$prefix}btn-border-color: var(--sl-line);
+    --#{$prefix}btn-hover-color: var(--sl-line);
+    --#{$prefix}btn-hover-border-color: var(--sl-line);
+    --#{$prefix}btn-active-border-color: var(--sl-line);
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    border-width: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    // The stretched link makes the whole card the target, so the focus ring moves to the card.
+    &.stretched-link:focus-visible {
+        outline: none;
+        box-shadow: none;
+    }
+
+    &.stretched-link::after {
+        z-index: 1;
+    }
+}
+
+// Active state – the highlighted "Optics and Manufacturing" card in the concept.
+.sl-card:hover,
+.sl-card:focus-within {
+    background: var(--sl-yellow);
+    transform: translateY(-.5rem);
+    box-shadow: var(--sl-shadow-hover);
+
+    .sl-card__title {
+        color: #000;
+    }
+
+    .sl-card__icon {
+        transform: scale(1.08);
+        filter: none;
+    }
+
+    .sl-card__btn {
+        background: #000;
+        border-color: #000;
+        color: #fff;
+    }
+}
+
+.sl-card:focus-within {
+    outline: 3px solid var(--sl-line);
+    outline-offset: 3px;
+}
+
+// Phones: compact horizontal cards so every category fits in about a screen and a half.
+@include media-breakpoint-down(sm) {
+    .sl-catalogue__grid {
+        --#{$prefix}gutter-y: .75rem;
+    }
+
+    .sl-card {
+        display: grid;
+        grid-template-columns: 3.25rem 1fr;
+        grid-template-areas: "icon title" "icon btn";
+        align-items: center;
+        justify-items: start;
+        gap: .5rem 1.25rem;
+        padding: 1rem 1.25rem;
+        text-align: left;
+    }
+
+    .sl-card__icon {
+        grid-area: icon;
+        width: 3.25rem;
+        height: 3.25rem;
+        margin: 0;
+    }
+
+    .sl-card__title {
+        grid-area: title;
+        font-size: 1.25rem;
+        min-height: 0;
+    }
+
+    .sl-card__btn {
+        grid-area: btn;
+        --#{$prefix}btn-padding-y: .4rem;
+        --#{$prefix}btn-padding-x: .8rem;
+    }
+
+    .sl-card:hover,
+    .sl-card:focus-within {
+        transform: none;
+    }
+}
+
+// ---------------------------------------------------------------------------- About / video
+.sl-about {
+    padding: 3rem 0 4.5rem;
+    // Two-tone band behind the top half of the video, as in the concept.
+    background: linear-gradient(to bottom, var(--sl-surface-2) 0, var(--sl-surface-2) 14rem, var(--sl-page-bg) 14rem);
+
+    @include media-breakpoint-up(md) {
+        padding-bottom: 6rem;
+        background: linear-gradient(to bottom, var(--sl-surface-2) 0, var(--sl-surface-2) 15.25rem, var(--sl-page-bg) 15.25rem);
+    }
+}
+
+.sl-video {
+    position: relative;
+    margin: 0 0 2rem;
+    padding: 1.25rem 0 0 1.25rem;
+
+    &::before {                     // Yellow offset block.
+        content: "";
+        position: absolute;
+        z-index: 0;
+        inset: 0 1.5rem 1.5rem 0;
+        background: var(--sl-yellow);
+    }
+
+    @include media-breakpoint-up(md) {
+        padding: 1.75rem 0 0 1.75rem;
+
+        &::before {
+            inset: 0 2.75rem 2.75rem 0;
+        }
+    }
+}
+
+.sl-video__frame {
+    position: relative;
+    z-index: 1;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+
+    video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.sl-video__poster {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform .6s var(--sl-ease);
+}
+
+.sl-video__frame:hover .sl-video__poster {
+    transform: scale(1.03);
+}
+
+.sl-video__play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    border: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0) 55%);
+    color: #fff;
+
+    &:focus-visible {
+        outline: 3px solid var(--sl-yellow);
+        outline-offset: -6px;
+    }
+
+    &:hover .sl-video__play-icon,
+    &:focus-visible .sl-video__play-icon {
+        transform: scale(1.1);
+    }
+}
+
+.sl-video__play-icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--sl-yellow);
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .35);
+    transition: transform var(--sl-duration) var(--sl-ease);
+
+    &::before {
+        content: "";
+        margin-left: .3rem;
+        border-style: solid;
+        border-width: .8rem 0 .8rem 1.3rem;
+        border-color: transparent transparent transparent #000;
+    }
+}
+
+.sl-video__play-label {
+    font-size: .875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+.sl-video__duration {
+    margin-left: .35rem;
+    padding: .1rem .4rem;
+    background: rgba(0, 0, 0, .65);
+    font-variant-numeric: tabular-nums;
+}
+
+.sl-video__fallback {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    gap: .5rem;
+    padding: 1.5rem;
+    text-align: center;
+    background: rgba(0, 0, 0, .82);
+    color: #fff;
+
+    strong {
+        color: var(--sl-yellow);
+        font-weight: 600;
+    }
+}
+
+.sl-about__title {
+    font-size: 1.75rem;
+
+    @include media-breakpoint-up(md) {
+        font-size: 2.25rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+        font-size: 2.5rem;
+    }
+
+    font-weight: 400 !important; // stylelint-disable-line declaration-no-important
+    margin-bottom: .75rem;
+}
+
+.sl-about__text {
+    max-width: 40rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+// ---------------------------------------------------------------------------- Motion
+// Content is only hidden once the AMD module has confirmed it can reveal it again.
+@media (prefers-reduced-motion: no-preference) {
+    .sl-reveal-ready [data-sl-reveal] {
+        opacity: 0;
+        translate: 0 1.5rem;
+        transition: opacity .6s var(--sl-ease), translate .6s var(--sl-ease);
+        transition-delay: calc(var(--sl-reveal-index, 0) * 100ms);
+
+        &.is-revealed {
+            opacity: 1;
+            translate: 0 0;
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sl-card,
+    .sl-card__icon,
+    .sl-video__poster,
+    .sl-video__play-icon {
+        transition: none;
+    }
+
+    .sl-card:hover,
+    .sl-card:focus-within {
+        transform: none;
+    }
+}
+
+@media (forced-colors: active) {
+    // In forced colours mode currentcolor resolves to the system text colour.
+    .sl-card {
+        border: 1px solid currentcolor;
+    }
+
+    .sl-section-title {
+        border-bottom-color: currentcolor;
+    }
+}

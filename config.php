@@ -17,7 +17,7 @@
 /**
  * Theme configuration for the Synergy Learning theme.
  *
- * Step 2: a child of Boost with its own SCSS (brand colours, Open Sans, navigation bar).
+ * A child of Boost with its own SCSS and a custom site home (frontpage) layout.
  *
  * @package    theme_synergylearning
  * @copyright  2026 Kaori Nishimura
@@ -41,6 +41,16 @@ $THEME->scss = function (theme_config $theme): string {
 };
 $THEME->prescsscallback = 'theme_synergylearning_get_pre_scss';
 $THEME->extrascsscallback = 'theme_synergylearning_get_extra_scss';
+
+// Layouts cascade from Boost key by key, so only the site home is replaced.
+$THEME->layouts = [
+    'frontpage' => [
+        'file' => 'frontpage.php',
+        'regions' => ['side-pre'],
+        'defaultregion' => 'side-pre',
+        'options' => ['nonavbar' => true],
+    ],
+];
 
 // Only layouts cascade from the parent theme. These properties don't, so they repeat Boost's values.
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';

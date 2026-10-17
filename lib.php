@@ -37,8 +37,8 @@ function theme_synergylearning_get_main_scss_content(theme_config $theme): strin
     $pre = file_get_contents(__DIR__ . '/scss/pre.scss');
     $preset = file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     $post = '';
-    // Each step of the build adds its own partial here (frontpage and login come later).
-    foreach (['post', 'navbar', 'footer'] as $partial) {
+    // Each step of the build adds its own partial here (login comes later).
+    foreach (['post', 'navbar', 'frontpage', 'footer'] as $partial) {
         $post .= file_get_contents(__DIR__ . "/scss/{$partial}.scss") . "\n";
     }
 
