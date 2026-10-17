@@ -34,12 +34,16 @@ This is a child theme of Boost for **Moodle 5.3**. It adds:
   1. **An image you upload for the category.** Go to *Site administration > Courses > Manage courses and categories*, edit the category, and insert an image into its **Description** (the editor's image button). The first image in the description is used. It is shown at 72 × 72 px without cropping, and is not inverted in dark mode, so a square PNG or SVG with a transparent background works best. The image also appears in the description on the category's own page.
   2. **The theme's built-in icon**, when the category's ID number is `product`, `business-development`, `optics`, `cpd` or `business-management`.
   3. **A generic icon.**
-- **Navigation.** To get the concept's navigation, add these lines to *Appearance > Advanced theme settings > Custom menu items*:
+- **Top menu.** The theme adjusts Moodle's top menu through the `primary_extend` navigation hook (`db/hooks.php`, `classes/hook_callbacks.php`), only while this theme is active:
+  - it adds **Course catalogue**, which goes to the catalogue section of the site home. On the site home it scrolls there smoothly and moves focus to the section heading;
+  - it hides **Home** from visitors who are not logged in (and guests): the site home is the log in page for them, and the logo already links to it.
+
+  For the rest of the concept's menu, add these lines to *Appearance > Advanced theme settings > Custom menu items*:
   ```
-  Course catalogue|/course/index.php
   My badges|/badges/mybadges.php
   Events|/calendar/view.php?view=upcoming
   ```
+- **Footer.** The footer band is full width on every page and stays at the bottom of the window on short pages.
 - **Text.** All page text is in language strings, so a site can change it under *Language > Language customisation* without code changes.
 - **Footer buttons.** Example for the Footer content setting, matching the concept:
   ```html

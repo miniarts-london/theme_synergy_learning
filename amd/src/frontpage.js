@@ -34,6 +34,8 @@ const SELECTORS = {
     reveal: '[data-sl-reveal]',
     video: '[data-region="sl-video"]',
     playVideo: '[data-action="sl-play-video"]',
+    catalogue: '#catalogue',
+    catalogueLink: 'a[href*="#catalogue"]',
 };
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -201,6 +203,47 @@ const initVideo = (frame) => {
 };
 
 /**
+ * The top menu's "Course catalogue" link scrolls to the catalogue section when it is already on this page.
+ *
+ * From any other page the link simply opens the site home at #catalogue.
+ *
+ * @param {HTMLElement} root The landing sections.
+ */
+const initCatalogueLink = (root) => {
+    const section = root.querySelector(SELECTORS.catalogue);
+    if (!section) {
+        return;
+    }
+    const samePage = (url) => {
+        const path = (p) => p.replace(/index\.php$/, '');
+        return url.origin === window.location.origin && path(url.pathname) === path(window.location.pathname);
+    };
+
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest(SELECTORS.catalogueLink);
+        if (!link || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+            return;
+        }
+        // Inside the mobile navigation drawer, let the link navigate normally so the drawer closes.
+        if (link.closest('.drawer')) {
+            return;
+        }
+        if (!samePage(new URL(link.href, window.location.href))) {
+            return;
+        }
+        e.preventDefault();
+        section.scrollIntoView({behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start'});
+        // Move focus to the section heading, so keyboard and screen reader users continue from there.
+        const heading = section.querySelector('h2');
+        if (heading) {
+            heading.setAttribute('tabindex', '-1');
+            heading.focus({preventScroll: true});
+        }
+        window.history.replaceState(null, '', '#catalogue');
+    });
+};
+
+/**
  * Run a feature without letting an error in it stop the rest.
  *
  * @param {Function} feature
@@ -235,5 +278,6 @@ export const init = () => {
         safely(initLoginForm, form);
     }
     safely(initReveal, root);
+    safely(initCatalogueLink, root);
     root.querySelectorAll(SELECTORS.video).forEach((frame) => safely(initVideo, frame));
 };

@@ -59,6 +59,29 @@
     background-color: transparent !important; // stylelint-disable-line declaration-no-important
 }
 
+// Full width on every page, not just the site home. Boost boxes the footer to the course content width (830px) on
+// limited-width pages (course, category, dashboard...), and from md #page.drawers has 3rem side padding.
+#page.drawers #page-footer.footer-popover:has(.sl-footer) {
+    max-width: none;
+    width: auto;
+    border-radius: 0;
+
+    @include media-breakpoint-up(md) {
+        margin-inline: -3rem;
+    }
+}
+
+// On short pages, keep the footer at the bottom of the window instead of leaving a strip of page background
+// below it. #page is a flex column whose main area grows, so a minimum height is enough.
+#page.drawers:has(.sl-footer) {
+    min-height: calc(100vh - #{$navbar-height});
+}
+
+// The site home layout already removes that side padding (see frontpage.scss).
+.sl-landing #page.drawers #page-footer.footer-popover:has(.sl-footer) {
+    margin-inline: 0;
+}
+
 // On the landing page the band runs the full width of the page, like the other sections.
 .sl-landing .sl-footer {
     padding-block: 3rem;

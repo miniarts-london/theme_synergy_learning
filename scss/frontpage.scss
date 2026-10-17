@@ -289,6 +289,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
 
 // ---------------------------------------------------------------------------- Catalogue
 .sl-catalogue {
+    scroll-margin-top: 1rem;    // A little space above the section when the top menu link scrolls to it.
     padding: 4rem 0 4.5rem;
 
     @include media-breakpoint-up(lg) {
