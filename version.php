@@ -25,9 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_synergylearning';  // Plugin type + name. Must match the folder name.
-$plugin->version   = 2026101707;               // YYYYMMDDXX. Raise it whenever settings or strings change.
-$plugin->release   = '0.1.0';
-$plugin->maturity  = MATURITY_ALPHA;
+$plugin->version   = 2026101708;               // YYYYMMDDXX. Raise it whenever settings or strings change.
+$plugin->release   = '1.2.0';
+$plugin->maturity  = MATURITY_STABLE;
 $plugin->requires  = 2026100500;               // Moodle 5.3.
 $plugin->supported = [503, 503];
 $plugin->dependencies = [

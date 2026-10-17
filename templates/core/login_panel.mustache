@@ -1,0 +1,37 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+}}
+{{!
+    @template core/login_panel
+
+    Image panel of the login page (overridden by theme_synergylearning).
+
+    The panel shows the MyLearning banner (set in lib.php), which already carries the site name and tagline,
+    so Moodle's default welcome copy and statistics are left out. Custom instructions entered by an admin
+    (Site administration > Plugins > Authentication > Manage authentication > Instructions) still show.
+
+    Example context (json):
+    {
+        "leftinstructions": "<p>Welcome to our learning platform. Please log in to continue.</p>"
+    }
+}}
+{{#leftinstructions}}
+    <div class="login-layout-left-content">
+        <div class="mx-auto text-start">
+            {{{leftinstructions}}}
+        </div>
+    </div>
+{{/leftinstructions}}

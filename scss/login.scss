@@ -1,0 +1,165 @@
+// Login page (Moodle 5.3 split layout), styled to match the log in form on the site home.
+// The banner image for the image panel is set in lib.php, because its URL comes from the theme.
+
+// Same order as the site home hero: form on the left, banner on the right.
+.pagelayout-login {
+    #page {
+        background-color: var(--sl-surface-1);
+    }
+
+    .login-layout-left {
+        order: 2;
+        overflow: hidden;
+        background-color: #03080c;      // The banner's own edge colour.
+
+        // The MyLearning banner (URL set in lib.php). It has its title and tagline built in, so it is shown
+        // at its own 2:1 shape, slightly enlarged so the title fills the panel, and its top and bottom edges
+        // fade into the panel colour instead of being cropped.
+        &::before {
+            content: "";
+            position: absolute;
+            inset-inline: -20%;
+            top: 50%;
+            translate: 0 -50%;
+            aspect-ratio: 2 / 1;
+            background: var(--sl-login-banner) center / cover no-repeat;
+            mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
+        }
+
+        .login-layout-left-content {
+            position: relative;         // Above the banner.
+        }
+    }
+
+    .login-layout-right {
+        background-color: var(--sl-surface-1);
+    }
+
+    .login-layout-right-content {
+        max-width: 24rem;
+    }
+}
+
+.pagelayout-login .loginform {
+    > h1 {
+        font-size: 2rem;
+        font-weight: 300;
+        line-height: 1.2;
+        color: var(--sl-ink);
+        margin-bottom: .25rem;
+    }
+
+    // Moodle's login form uses Bootstrap utilities (.text-muted, .mb-3, .mb-4), which are !important,
+    // so matching the site home spacing and text colour needs !important too.
+    /* stylelint-disable declaration-no-important */
+    > h1 + .text-muted {
+        font-size: .9375rem;
+        color: var(--sl-body) !important;
+        margin-bottom: 1.75rem !important;
+    }
+
+    .login-form .login-form-username,
+    .login-form .login-form-password {
+        margin-bottom: 1.75rem !important;
+    }
+    /* stylelint-enable declaration-no-important */
+
+    .login-form {
+
+        .form-label {
+            font-size: .9375rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--sl-ink);
+            margin-bottom: .25rem;
+        }
+
+        .login-input-wrapper {
+            .login-input-icon {
+                display: none;
+            }
+
+            // Underlined fields, as on the site home.
+            .form-control {
+                border: 0;
+                border-bottom: 2px solid var(--sl-line);
+                border-radius: 0;
+                background-color: transparent;
+                padding: .7rem .25rem;
+                font-size: 1rem;
+                color: var(--#{$prefix}emphasis-color);
+                transition: background-color var(--sl-duration), border-color var(--sl-duration);
+
+                &::placeholder {
+                    color: transparent;     // The visible labels already say what to enter.
+                }
+
+                &:hover {
+                    background-color: rgba(var(--#{$prefix}emphasis-color-rgb), .03);
+                }
+
+                &:focus {
+                    background-color: var(--#{$prefix}body-bg);
+                    border-bottom-color: var(--sl-line);
+                    box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-yellow);
+                }
+            }
+        }
+
+        // Moodle's show/hide password button, styled like the site home's eye toggle.
+        .toggle-sensitive-wrapper .toggle-sensitive-btn {
+            --#{$prefix}btn-bg: transparent;
+            --#{$prefix}btn-border-color: transparent;
+            --#{$prefix}btn-hover-bg: transparent;
+            --#{$prefix}btn-hover-border-color: transparent;
+            --#{$prefix}btn-active-bg: transparent;
+            --#{$prefix}btn-active-border-color: transparent;
+            border: 0;
+            border-bottom: 2px solid var(--sl-line);
+            border-radius: 0;
+            min-width: 2.75rem;             // 44px target.
+            color: var(--sl-ink);
+
+            &:focus,
+            &:focus-visible {
+                background-color: transparent;
+                border-color: var(--sl-line);
+                box-shadow: 0 0 0 .25rem var(--sl-yellow);
+            }
+        }
+
+        .text-end a {
+            color: var(--sl-ink);
+            font-size: .9375rem;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    // Moodle's grey link buttons (Cookies notice) need the darker body colour on the grey panel (WCAG 1.4.3).
+    .btn-link {
+        color: var(--sl-body);
+    }
+
+    // The yellow log in button with an arrow, as on the site home.
+    #loginbtn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .6rem;
+        min-height: 3rem;
+        font-size: 1.125rem;
+        text-transform: uppercase;
+
+        &::before {
+            content: "";
+            width: .75rem;
+            height: .75rem;
+            background-color: currentcolor;
+            mask: url([[pix:theme_synergylearning|arrow-right]]) center / contain no-repeat;
+        }
+    }
+}

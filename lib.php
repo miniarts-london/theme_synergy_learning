@@ -37,8 +37,7 @@ function theme_synergylearning_get_main_scss_content(theme_config $theme): strin
     $pre = file_get_contents(__DIR__ . '/scss/pre.scss');
     $preset = file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     $post = '';
-    // Each step of the build adds its own partial here (login comes later).
-    foreach (['post', 'navbar', 'frontpage', 'footer'] as $partial) {
+    foreach (['post', 'navbar', 'frontpage', 'login', 'footer'] as $partial) {
         $post .= file_get_contents(__DIR__ . "/scss/{$partial}.scss") . "\n";
     }
 
@@ -56,13 +55,21 @@ function theme_synergylearning_get_pre_scss(theme_config $theme): string {
 }
 
 /**
- * Extra-SCSS callback, appended last. Reuses Boost's, which adds the "Raw SCSS" theme setting.
+ * Extra-SCSS callback, appended last. Reuses Boost's (raw SCSS setting), then puts the MyLearning banner
+ * in the login page's image panel instead of Boost's default photo.
  *
  * @param theme_config $theme The theme config object.
  * @return string SCSS
  */
 function theme_synergylearning_get_extra_scss(theme_config $theme): string {
-    return theme_boost_get_extra_scss($theme);
+    $banner = $theme->image_url('frontpage/intro-banner-1600', 'theme_synergylearning')->out(false);
+
+    // The banner is drawn by scss/login.scss; only its URL has to come from here.
+    // Boost's own photo and its "AI-generated image" label are removed.
+    return theme_boost_get_extra_scss($theme) . "\n"
+        . "body.pagelayout-login #page .login-layout-left {"
+        . " background-image: none; --sl-login-banner: url('{$banner}'); }\n"
+        . "body.pagelayout-login #page .login-layout-left::after { content: none; }\n";
 }
 
 /**
