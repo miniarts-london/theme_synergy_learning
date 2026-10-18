@@ -37,11 +37,11 @@ This is a child theme of Boost for **Moodle 5.3**. It adds:
 - **Top menu.** The theme adjusts Moodle's top menu through the `primary_extend` navigation hook (`db/hooks.php`, `classes/hook_callbacks.php`), only while this theme is active:
   - it adds **Course catalogue**, which goes to the catalogue section of the site home. On the site home it scrolls there smoothly and moves focus to the section heading;
   - it adds **My badges** (when badges are enabled) and **Events**, the calendar's upcoming events page. Visitors who are not logged in are asked to log in first, then taken on to the page. Each is shown as the current item on its own pages;
-  - it moves **Site administration** (admins only) to the end of the menu;
-  - it hides **Home** from visitors who are not logged in (and guests): the site home is the log in page for them, and the logo already links to it.
+  - it hides **Home** and **Dashboard** from visitors who are not logged in (and guests): the site home is the log in page for them, and the logo already links to it.
 
-  No *Custom menu items* are needed for the concept's menu. Remove any old Course catalogue, My badges or Events lines there, or they appear twice.
+  Because the theme adds these links itself, nothing needs to be typed into Moodle's **Custom menu items** setting (*Site administration > Appearance > Advanced theme settings*). If that box already has Course catalogue, My badges or Events lines, from before the theme was installed, delete them, or those links show twice in the menu.
 - **Navigation bar.** 96px tall at the top of the page, with 10px/20px padding; it shrinks to 72px (logo included) once the page scrolls, and the side drawers stay attached below it. Set by `$navbar-height` in `scss/pre.scss`, `scss/navbar.scss` and `amd/src/navbar.js`. Motion is turned off for visitors who prefer reduced motion.
+- **Mobile navigation bar.** Below the md breakpoint the bar shows a small logo (40px) on the left, the menu button on the right and the user menu and icons in between. The main menu drawer slides in from the right, next to the button, with its close button on the left. Boost hides the logo on phones and opens this drawer from the left, so both are overridden in `scss/navbar.scss`.
 - **Footer.** The footer band is full width on every page and stays at the bottom of the window on short pages.
 - **Text.** All page text is in language strings, so a site can change it under *Language > Language customisation* without code changes.
 - **Footer buttons.** Example for the Footer content setting, matching the concept:

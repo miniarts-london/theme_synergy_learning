@@ -27,13 +27,71 @@ body.sl-navbar-compact {
     }
 }
 
-// Boost pins the side drawers (course index, blocks) below the bar from lg; keep them attached as it shrinks.
-@include media-breakpoint-up(lg) {
-    .drawer-left,
-    .drawer-right {
-        top: var(--sl-navbar-height);
-        height: calc(100vh - var(--sl-navbar-height));
-        transition: top var(--sl-duration) var(--sl-ease), height var(--sl-duration) var(--sl-ease);
+// Boost pins the drawers (main menu, course index, blocks) below the bar; keep them attached as it shrinks.
+// Only top and height are set here, so Boost's own slide-in transitions still apply.
+.drawer-left,
+.drawer-right {
+    top: var(--sl-navbar-height);
+    height: calc(100vh - var(--sl-navbar-height));
+}
+
+// Small screens: a small logo on the left, the menu button on the right and the user menu and icons
+// in between. Boost hides the logo below md and puts the menu button first, so both are changed here.
+@include media-breakpoint-down(md) {
+    .navbar.fixed-top {
+        padding-inline: 1rem;
+
+        .container-fluid {
+            flex-wrap: nowrap;
+            gap: .5rem;
+            padding-inline: 0;
+        }
+
+        .navbar-brand {
+            display: flex !important; // stylelint-disable-line declaration-no-important
+            flex-shrink: 0;
+            margin-inline-end: auto !important; // stylelint-disable-line declaration-no-important
+
+            .logo {
+                height: 40px;
+            }
+        }
+
+        .navbar-toggler {
+            order: 1;
+            margin-inline-start: .25rem;
+        }
+
+        #usernavigation {
+            margin-inline-start: 0 !important; // stylelint-disable-line declaration-no-important
+        }
+    }
+}
+
+// The main menu drawer slides in from the right, next to the menu button, instead of from the left.
+.drawer.drawer-left.drawer-primary {
+    left: auto;
+    right: calc(-#{$drawer-left-width} - 10px);
+    transition: right .2s ease, top .2s ease, bottom .2s ease, visibility .2s ease;
+
+    &.show {
+        left: auto;
+        right: 0;
+    }
+
+    // The close button goes on the left, the side the drawer opened from, as Boost does for its right drawer.
+    .drawerheadertop {
+        flex-direction: row-reverse;
+    }
+
+    .drawertoggle {
+        margin-inline: 5px 16px;
+    }
+
+    // The same small logo as in the bar.
+    .drawerheading .logo {
+        width: auto;
+        height: 40px;
     }
 }
 
@@ -90,8 +148,7 @@ body.sl-navbar-compact {
     .primary-navigation .mds-nav-pill__label::after,
     .navbar.fixed-top,
     .navbar.fixed-top .navbar-brand .logo,
-    .drawer-left,
-    .drawer-right {
+    .drawer.drawer-primary {
         transition: none;
     }
 }
