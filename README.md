@@ -2,7 +2,7 @@
 
 This is a child theme of Boost for **Moodle 5.3**.
 
-**Live demo:** [http://moodle.miniarts.uk/](http://moodle.miniarts.uk/)
+**Live demo:** <a href="http://moodle.miniarts.uk/" target="_blank" rel="noopener">http://moodle.miniarts.uk/</a>
 
 It adds:
 
