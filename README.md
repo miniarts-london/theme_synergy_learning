@@ -1,6 +1,6 @@
 # Synergy Learning theme (`theme_synergylearning`)
 
-This is a child theme of Boost for **Moodle 5.3**.
+This is the optional combined task. The Task 1 page is built into the **Front page** layout of a Boost child theme called `theme_synergylearning`, and the theme also has the two required footer settings.
 
 **Live demo:** <a href="http://moodle.miniarts.uk/" target="_blank" rel="noopener">http://moodle.miniarts.uk/</a>
 
