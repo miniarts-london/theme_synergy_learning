@@ -51,7 +51,7 @@
 
 <footer id="page-footer" class="footer-popover bg-white">
     {{#output.footer_brand}}
-    <div class="sl-footer" data-region="sl-footer">
+    <div class="sl-footer" id="contact" data-region="sl-footer">
         <div class="sl-footer__inner">
             {{! One column: the footer content first, then the logo and copyright at the very bottom.
                 The copyright is outside the content check, so it shows even without footer content. }}
@@ -172,6 +172,7 @@
 {{#js}}
 require(['theme_synergylearning/footer'], (m) => m.init());
 require(['theme_synergylearning/navbar'], (m) => m.init());
+require(['theme_synergylearning/login'], (m) => m.init());
 
 require([
     'theme_boost/footer-popover',

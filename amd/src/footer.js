@@ -1,4 +1,4 @@
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -11,116 +11,71 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Footer enhancements: cookie preferences and the current year.
+ * Cookie settings pop-up for the footer.
+ *
+ * The Cookie settings button is a plain link to the site policies; with JavaScript it opens the pop-up instead.
+ * The choice is only remembered in this browser.
  *
  * @module     theme_synergylearning/footer
  * @copyright  2026 Kaori Nishimura
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 import {Modal} from 'bootstrap';
 import {add as addToast} from 'core/toast';
 import {getString} from 'core/str';
 
-const SELECTORS = {
-    cookieButton: '.btn-sl-cookie, [data-action="sl-cookie-settings"]',
-    cookieForm: '[data-cookie-form]',
-    cookieModal: '#cookie-modal',
-    analytics: '#cookie-analytics',
-    year: '[data-year]',
-};
-
 const STORAGE_KEY = 'ml-cookie-prefs';
 
-/**
- * Run one feature without letting an error stop the others.
- *
- * @param {Function} feature The feature to run.
- */
-const safely = (feature) => {
+// Some private browsing modes make localStorage throw, so treat it as optional.
+const readPrefs = () => {
     try {
-        feature();
-    } catch (error) {
-        window.console.error(error);
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch (e) {
+        return {};
     }
 };
 
-/**
- * Cookie preferences pop-up, saved per browser.
- *
- * The Cookie settings button is a normal link to the site policies, so it still works without JavaScript.
- * Here it opens the pop-up instead.
- */
-const initCookies = () => {
-    const modalElement = document.querySelector(SELECTORS.cookieModal);
-    const form = modalElement?.querySelector(SELECTORS.cookieForm);
-    const analytics = form?.querySelector(SELECTORS.analytics);
-    if (!analytics) {
+const savePrefs = (prefs) => {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
+    } catch (e) {
+        // Not saved, but the toast still confirms the choice for this visit.
+    }
+};
+
+export const init = () => {
+    const popup = document.getElementById('cookie-modal');
+    if (!popup) {
         return;
     }
 
-    // Move the pop-up to the end of <body> so no footer styles (overflow, stacking) can clip it.
-    document.body.append(modalElement);
-    const modal = Modal.getOrCreateInstance(modalElement);
-
-    const loadSaved = () => {
-        try {
-            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-            analytics.checked = !!saved?.analytics;
-        } catch (error) {
-            // Storage unavailable, so the defaults apply.
-        }
-    };
-
-    // The button that opened the pop-up, so focus can go back to it on close (WCAG 2.4.3).
-    let opener = null;
+    // The footer can clip it otherwise.
+    document.body.append(popup);
+    const modal = Modal.getOrCreateInstance(popup);
+    const analytics = popup.querySelector('#cookie-analytics'); //popup content
+    let openedFrom = null;
 
     document.addEventListener('click', (e) => {
-        const button = e.target.closest(SELECTORS.cookieButton);
-        if (!button) {
-            return;
+        const button = e.target.closest('.btn-sl-cookie, [data-action="sl-cookie-settings"]');
+        if (button) {
+            e.preventDefault();
+            openedFrom = button;
+            analytics.checked = !!readPrefs().analytics;
+            modal.show();
         }
-        e.preventDefault();
-        opener = button;
-        loadSaved();
-        modal.show(button);
     });
 
-    modalElement.addEventListener('hidden.bs.modal', () => {
-        opener?.focus();
-        opener = null;
-    });
+    // Send keyboard users back to where they were.
+    popup.addEventListener('hidden.bs.modal', () => openedFrom?.focus());
 
-    form.addEventListener('submit', async(e) => {
+    popup.querySelector('form').addEventListener('submit', async(e) => {
         e.preventDefault();
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({analytics: analytics.checked, savedAt: Date.now()}));
-        } catch (error) {
-            // Storage unavailable: the choice applies to this page only.
-        }
+        savePrefs({analytics: analytics.checked, savedAt: Date.now()});
         modal.hide();
-        const message = await getString(analytics.checked ? 'cookie_saved_on' : 'cookie_saved_off', 'theme_synergylearning');
-        addToast(message);
+        addToast(await getString(analytics.checked ? 'cookie_saved_on' : 'cookie_saved_off', 'theme_synergylearning'));
     });
-};
-
-/**
- * Keep any [data-year] element showing the current year.
- */
-const initYear = () => {
-    const year = String(new Date().getFullYear());
-    document.querySelectorAll(SELECTORS.year).forEach((el) => {
-        el.textContent = year;
-    });
-};
-
-/**
- * Initialise the footer enhancements.
- */
-export const init = () => {
-    safely(initCookies);
-    safely(initYear);
 };

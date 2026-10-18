@@ -1,4 +1,4 @@
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -11,46 +11,25 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Navigation bar: tall at the top of the page, compact once the page scrolls.
- *
- * Adds body.sl-navbar-compact when the page is scrolled; scss/navbar.scss does the rest. Boost's own scroll class
- * only appears after a full screen of scrolling, so the theme sets its own.
+ * Shrinks the top bar once the page is scrolled (the sizes are in scss/navbar.scss).
  *
  * @module     theme_synergylearning/navbar
  * @copyright  2026 Kaori Nishimura
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-const COMPACT_CLASS = 'sl-navbar-compact';
-
-// How far the page must scroll, in pixels, before the bar shrinks.
-const THRESHOLD = 24;
-
-/**
- * Start watching the scroll position.
- */
 export const init = () => {
-    const body = document.body;
-    if (body.dataset.slNavbar) {
-        return;
-    }
-    body.dataset.slNavbar = 'true';
+    // Watching a 1px marker 24px down the page is cheaper than a scroll listener.
+    // Once it scrolls out of view, the bar shrinks.
+    const marker = document.createElement('div');
+    marker.setAttribute('aria-hidden', 'true');
+    marker.style.cssText = 'position:absolute;top:24px;left:0;width:1px;height:1px;pointer-events:none;';
+    document.body.prepend(marker);
 
-    let queued = false;
-    const update = () => {
-        body.classList.toggle(COMPACT_CLASS, window.scrollY > THRESHOLD);
-        queued = false;
-    };
-
-    window.addEventListener('scroll', () => {
-        if (!queued) {
-            queued = true;
-            window.requestAnimationFrame(update);
-        }
-    }, {passive: true});
-
-    update();
+    new IntersectionObserver(([entry]) => {
+        document.body.classList.toggle('sl-navbar-compact', !entry.isIntersecting);
+    }).observe(marker);
 };

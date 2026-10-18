@@ -129,11 +129,15 @@ if ($isloggedin) {
         ? (new \core\url('/login/forgot_password.php'))->out(false)
         : $CFG->forgottenpasswordurl;
 
-    // Only offer "Contact us" when site support is available to people who are not logged in.
+    // The Contact us link goes to the site's support page or form when visitors are allowed to use it
+    // (Server > Support contact > Support availability). Otherwise it jumps to the contact details
+    // in the footer, as on the static page.
     if (isset($CFG->supportavailability) && $CFG->supportavailability == CONTACT_SUPPORT_ANYONE) {
         $hero['contacturl'] = !empty($CFG->supportpage)
             ? $CFG->supportpage
             : (new \core\url('/user/contactsitesupport.php'))->out(false);
+    } else {
+        $hero['contacturl'] = '#contact';
     }
 
     // Single sign-on buttons (OAuth 2, etc.) configured on the site, as on the standard login page.
