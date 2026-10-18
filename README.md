@@ -1,6 +1,10 @@
 # Synergy Learning theme (`theme_synergylearning`)
 
-This is a child theme of Boost for **Moodle 5.3**. It adds:
+This is a child theme of Boost for **Moodle 5.3**.
+
+**Live demo:** [http://moodle.miniarts.uk/](http://moodle.miniarts.uk/)
+
+It adds:
 
 - a branded **site home** built from the MyLearning concept (Task 1): a log in panel, a course catalogue and an about section;
 - a **footer logo** setting, which falls back to `core_admin | logocompact` when no logo is uploaded;
