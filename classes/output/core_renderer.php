@@ -29,14 +29,19 @@ class core_renderer extends \theme_boost\output\core_renderer {
     /**
      * Footer branding for the footer template, read as {{#output.footer_brand}} … {{/output.footer_brand}}.
      *
-     * @return array|false Template data, or false when there is no logo, copyright text or footer content.
+     * @return array|false Template data, or false when the footer has nothing to show.
      */
     public function footer_brand(): array|false {
         $logourl = $this->get_footer_logo_url();
         $copyright = $this->get_footer_copyright();
+        $contact = $this->get_footer_contact();
+        $address = $this->get_footer_address();
+        $links = $this->get_footer_links();
+        $cookiebutton = $this->show_cookie_button();
         $content = $this->get_footer_content();
 
-        if ($logourl === null && $copyright === '' && $content === '') {
+        $hascontents = $contact !== null || $address || $links || $cookiebutton || $content !== '';
+        if ($logourl === null && $copyright === '' && !$hascontents) {
             return false;
         }
 
@@ -44,6 +49,11 @@ class core_renderer extends \theme_boost\output\core_renderer {
             'logourl' => $logourl,
             'logoalt' => $this->get_footer_logo_alt(),
             'copyright' => $copyright,
+            'contact' => $contact,
+            'address' => $address ? ['firstline' => $address[0], 'lines' => array_slice($address, 1)] : null,
+            'links' => $links,
+            'haslinks' => !empty($links),
+            'cookiebutton' => $cookiebutton,
             'content' => $content,
         ];
     }
@@ -82,7 +92,8 @@ class core_renderer extends \theme_boost\output\core_renderer {
     }
 
     /**
-     * Free footer content (for example an address or contact details) from the theme's HTML editor setting.
+     * Additional footer content from the theme's HTML editor setting, for anything the other footer settings
+     * don't cover.
      *
      * Only site administrators can edit theme settings, and they can already add raw HTML through
      * Appearance > Additional HTML, so the content is treated as trusted: filters apply, but it is not passed
@@ -99,6 +110,106 @@ class core_renderer extends \theme_boost\output\core_renderer {
         }
 
         return format_text($html, FORMAT_HTML, ['context' => context_system::instance(), 'noclean' => true]);
+    }
+
+    /**
+     * The Contact button: its text, link and an icon matching the kind of link.
+     *
+     * @return array|null Template data, or null when no link is set or the link isn't usable.
+     */
+    public function get_footer_contact(): ?array {
+        $settings = $this->page->theme->settings;
+        $url = $this->footer_url((string) ($settings->contacturl ?? ''));
+        if ($url === null) {
+            return null;
+        }
+
+        $label = trim((string) ($settings->contactlabel ?? ''));
+        if ($label === '') {
+            $label = get_string('contactus', 'theme_synergylearning');
+        }
+
+        // A phone or envelope icon for tel: and mailto: links, plus hidden text saying how, for screen readers.
+        $scheme = strtolower((string) strstr($url, ':', true));
+        $icons = ['tel' => 'fa-phone', 'mailto' => 'fa-envelope'];
+
+        return [
+            'label' => format_string($label, true, ['context' => context_system::instance()]),
+            'url' => $url,
+            'icon' => $icons[$scheme] ?? 'fa-arrow-right',
+            'via' => isset($icons[$scheme]) ? get_string('contactvia_' . $scheme, 'theme_synergylearning') : '',
+        ];
+    }
+
+    /**
+     * The address, one entry per non-empty line, formatted for output.
+     *
+     * @return string[]
+     */
+    public function get_footer_address(): array {
+        $lines = preg_split('/\R/u', (string) ($this->page->theme->settings->address ?? ''));
+        $lines = array_values(array_filter(array_map('trim', $lines), fn(string $line): bool => $line !== ''));
+
+        return array_map(
+            fn(string $line): string => format_string($line, true, ['context' => context_system::instance()]),
+            $lines
+        );
+    }
+
+    /**
+     * The footer links, from "Label|URL" lines. Lines without a label or a usable URL are skipped.
+     *
+     * @return array[] Each with 'label' and 'url'.
+     */
+    public function get_footer_links(): array {
+        $links = [];
+        foreach (preg_split('/\R/u', (string) ($this->page->theme->settings->footerlinks ?? '')) as $line) {
+            [$label, $url] = array_map('trim', explode('|', $line, 2)) + [1 => ''];
+            $url = $this->footer_url($url);
+            if ($label === '' || $url === null) {
+                continue;
+            }
+            $links[] = [
+                'label' => format_string($label, true, ['context' => context_system::instance()]),
+                'url' => $url,
+            ];
+        }
+        return $links;
+    }
+
+    /**
+     * Whether to show the Cookie settings button. On by default.
+     *
+     * @return bool
+     */
+    public function show_cookie_button(): bool {
+        return (bool) ($this->page->theme->settings->cookiebutton ?? true);
+    }
+
+    /**
+     * Turn a link typed into a footer setting into a URL for output.
+     *
+     * Allowed: http(s) web addresses, mailto: and tel: links, paths on this site starting with "/", and "#" fragments.
+     * Anything else (javascript: links, for example) is rejected, so a typing mistake can't break the footer.
+     *
+     * @param string $url As typed by the admin.
+     * @return string|null The URL, or null when it is empty or not allowed.
+     */
+    protected function footer_url(string $url): ?string {
+        $url = trim($url);
+        if ($url === '') {
+            return null;
+        }
+        if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
+            return (new \core\url($url))->out(false);
+        }
+        if (str_starts_with($url, '#')) {
+            return $url;
+        }
+        if (preg_match('/^(https?:\/\/|mailto:|tel:)/i', $url)) {
+            return $url;
+        }
+        return null;
     }
 
     /**

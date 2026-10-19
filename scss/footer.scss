@@ -1,4 +1,5 @@
-// Synergy Learning – footer brand band (logo, footer content, copyright), shown on every page above Boost's footer.
+// Synergy Learning – footer band (contact, address, links, cookie settings, logo, copyright), shown on every page
+// above Boost's footer.
 
 .sl-footer {
     background: var(--sl-surface-3);
@@ -7,8 +8,8 @@
     font-size: .875rem;
 }
 
-// One left-aligned column: the footer content (contact, address, links, cookie settings), then the logo and
-// copyright at the very bottom. Lined up with the page container used by the sections above.
+// One left-aligned column: contact, address, links, cookie settings and any additional content, then the logo
+// and copyright at the very bottom. Lined up with the page container used by the sections above.
 .sl-footer__inner {
     @include make-container();
     display: flex;
@@ -41,6 +42,28 @@
 
 .sl-footer__copyright {
     margin: 0;
+}
+
+.sl-footer__address {
+    margin: 0;
+    font-style: normal;
+    line-height: 1.55;
+    color: var(--#{$prefix}emphasis-color);
+}
+
+.sl-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin: 0;
+
+    a {
+        color: var(--#{$prefix}emphasis-color);
+    }
+}
+
+.sl-footer__contact .icon {
+    margin-inline-end: .4rem;
 }
 
 .sl-footer__content {
@@ -87,9 +110,8 @@
     padding-block: 3rem;
 }
 
-// Cookie settings button for the Footer content setting: the concept's green outline, darkened from #68b631
-// (2.1:1, fails WCAG AA) to #3f7020 (5.0:1 on the footer grey; white on the hover fill is 5.9:1).
-// Use it in the editor's HTML as: <a class="btn btn-sl-cookie" href="...">Cookie settings</a>
+// Cookie settings button: the concept's green outline, darkened from #68b631 (2.1:1, fails WCAG AA) to #3f7020
+// (5.0:1 on the footer grey; white on the hover fill is 5.9:1).
 .btn-sl-cookie {
     --sl-cookie-green: #3f7020;
     --#{$prefix}btn-padding-y: .35rem;

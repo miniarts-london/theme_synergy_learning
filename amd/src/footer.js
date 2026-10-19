@@ -16,8 +16,8 @@
 /**
  * Cookie settings pop-up for the footer.
  *
- * The Cookie settings button is a plain link to the site policies; with JavaScript it opens the pop-up instead.
- * The choice is only remembered in this browser.
+ * The Cookie settings button is hidden until this module runs, then opens the pop-up. A .btn-sl-cookie button
+ * in the additional footer content opens it too. The choice is only remembered in this browser.
  *
  * @module     theme_synergylearning/footer
  * @copyright  2026 Kaori Nishimura
@@ -56,8 +56,13 @@ export const init = () => {
     // The footer can clip it otherwise.
     document.body.append(popup);
     const modal = Modal.getOrCreateInstance(popup);
-    const analytics = popup.querySelector('#cookie-analytics'); //popup content
+    const analytics = popup.querySelector('#cookie-analytics');
     let openedFrom = null;
+
+    // The Cookie settings button is hidden in the template, as it needs this script to work.
+    document.querySelectorAll('[data-action="sl-cookie-settings"][hidden]').forEach((button) => {
+        button.hidden = false;
+    });
 
     document.addEventListener('click', (e) => {
         const button = e.target.closest('.btn-sl-cookie, [data-action="sl-cookie-settings"]');

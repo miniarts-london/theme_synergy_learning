@@ -59,7 +59,7 @@ if ($ADMIN->fulltree) {
     $page->add($setting);
     $settings->add($page);
 
-    // Footer tab: the two custom settings required by the brief (logo, copyright), plus free footer content.
+    // Footer tab: the two custom settings required by the brief (logo, copyright), then the footer contents.
     $page = new admin_settingpage(
         'theme_synergylearning_footer',
         get_string('footersettings', 'theme_synergylearning')
@@ -89,7 +89,74 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 
-    // Footer content: free HTML (address, contact details, links) shown in the footer band. Empty means nothing is shown.
+    // Footer contents, one setting per part so the markup and styling stay consistent whatever is typed.
+    // Each part is hidden when its setting is empty (see core_renderer::footer_brand()).
+    $page->add(new admin_setting_heading(
+        'theme_synergylearning/footercontentsheading',
+        get_string('footercontentsheading', 'theme_synergylearning'),
+        get_string('footercontentsheading_desc', 'theme_synergylearning')
+    ));
+
+    // Contact us button: a label and a link (web address, site path, mailto: or tel:).
+    $setting = new admin_setting_configtext(
+        'theme_synergylearning/contactlabel',
+        get_string('contactlabel', 'theme_synergylearning'),
+        get_string('contactlabel_desc', 'theme_synergylearning'),
+        get_string('contactus', 'theme_synergylearning'),
+        PARAM_TEXT,
+        30
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $setting = new admin_setting_configtext(
+        'theme_synergylearning/contacturl',
+        get_string('contacturl', 'theme_synergylearning'),
+        get_string('contacturl_desc', 'theme_synergylearning'),
+        '',
+        PARAM_RAW_TRIMMED,
+        50
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Address: plain text, one line per address line.
+    $setting = new admin_setting_configtextarea(
+        'theme_synergylearning/address',
+        get_string('address', 'theme_synergylearning'),
+        get_string('address_desc', 'theme_synergylearning'),
+        '',
+        PARAM_TEXT,
+        50,
+        6
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Footer links: one per line as "Label|URL", the same format as Moodle's Custom menu items.
+    $setting = new admin_setting_configtextarea(
+        'theme_synergylearning/footerlinks',
+        get_string('footerlinks', 'theme_synergylearning'),
+        get_string('footerlinks_desc', 'theme_synergylearning'),
+        '',
+        PARAM_RAW,
+        50,
+        6
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Cookie settings button, which opens the theme's cookie preferences pop-up.
+    $setting = new admin_setting_configcheckbox(
+        'theme_synergylearning/cookiebutton',
+        get_string('cookiebutton', 'theme_synergylearning'),
+        get_string('cookiebutton_desc', 'theme_synergylearning'),
+        1
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Additional footer content: free HTML for anything the settings above don't cover. Empty means nothing is shown.
     $setting = new admin_setting_confightmleditor(
         'theme_synergylearning/footercontent',
         get_string('footercontent', 'theme_synergylearning'),

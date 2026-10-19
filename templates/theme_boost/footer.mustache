@@ -20,12 +20,14 @@
     Page footer (overridden by theme_synergylearning).
 
     Boost's footer is kept unchanged so its help pop-over, support links and debugging output still work.
-    A branded band is added at the top showing:
-    * the footer logo: the theme's "Footer logo" setting, falling back to core_admin | logocompact;
-    * the copyright text, with the © symbol prepended statically. Nothing is output when the setting is empty;
-    * optional footer content (rich text such as an address), when the admin has entered any.
-    The footer content comes first, with the logo and copyright at the very bottom.
-    A Cookie settings pop-up is added with the band; a .btn-sl-cookie button in the footer content opens it.
+    A branded band is added at the top showing, in this order, each only when its setting has a value:
+    * the Contact button (an icon is added for tel: and mailto: links);
+    * the address;
+    * the footer links;
+    * the Cookie settings button, which opens the Cookie settings pop-up added with the band;
+    * additional footer content (free rich text);
+    * then, at the very bottom, the footer logo (the theme's "Footer logo" setting, falling back to
+      core_admin | logocompact) and the copyright text, with the © symbol prepended statically.
 
     Example context (json):
     {
@@ -43,7 +45,12 @@
                 "logourl": "https://example.com/pluginfile.php/1/theme_synergylearning/footerlogo/1/logo.png",
                 "logoalt": "MyLearning",
                 "copyright": "2026 Nikon Optical Ltd. All rights reserved.",
-                "content": "<p>Nikon Optical Ltd, 3 Tanners Drive, Milton Keynes</p>"
+                "contact": {"label": "Contact us", "url": "tel:+441632960000", "icon": "fa-phone", "via": "by phone"},
+                "address": {"firstline": "Nikon Optical Ltd", "lines": ["3 Tanners Drive", "United Kingdom"]},
+                "haslinks": true,
+                "links": [{"label": "Policies", "url": "https://example.com/admin/tool/policy/viewall.php"}],
+                "cookiebutton": true,
+                "content": ""
             }
         }
     }
@@ -53,8 +60,32 @@
     {{#output.footer_brand}}
     <div class="sl-footer" id="contact" data-region="sl-footer">
         <div class="sl-footer__inner">
-            {{! One column: the footer content first, then the logo and copyright at the very bottom.
-                The copyright is outside the content check, so it shows even without footer content. }}
+            {{! One column: the contact button, address, links, cookie button and any extra content, then the logo
+                and copyright at the very bottom. Each part is left out when its setting is empty. Text values are
+                already escaped by format_string() in the renderer, hence the triple braces. }}
+            {{#contact}}
+                <a class="btn btn-primary sl-footer__contact" href="{{url}}">
+                    <i class="icon fa {{icon}} fa-fw" aria-hidden="true"></i>{{{label}}}{{#via}}<span class="visually-hidden"> {{via}}</span>{{/via}}
+                </a>
+            {{/contact}}
+            {{#address}}
+                <address class="sl-footer__address">
+                    <strong>{{{firstline}}}</strong>{{#lines}}<br>{{{.}}}{{/lines}}
+                </address>
+            {{/address}}
+            {{#haslinks}}
+                <ul class="sl-footer__links list-unstyled">
+                    {{#links}}
+                        <li><a href="{{url}}">{{{label}}}</a></li>
+                    {{/links}}
+                </ul>
+            {{/haslinks}}
+            {{#cookiebutton}}
+                {{! Hidden until amd/src/footer.js is ready to open the pop-up, as it does nothing without JavaScript. }}
+                <button type="button" class="btn btn-sl-cookie" data-action="sl-cookie-settings" hidden>
+                    {{#str}}cookiesettings, theme_synergylearning{{/str}}
+                </button>
+            {{/cookiebutton}}
             {{#content}}
                 <div class="sl-footer__content">
                     {{{content}}}
@@ -70,8 +101,8 @@
             </div>
         </div>
     </div>
-        {{! Cookie settings pop-up. The Cookie settings button in the Footer content opens it (see amd/src/footer.js);
-            without JavaScript the button stays a link to the site policies. }}
+        {{! Cookie settings pop-up, opened by the Cookie settings button (see amd/src/footer.js). A .btn-sl-cookie
+            button in the additional footer content opens it too. }}
         <div class="modal fade" id="cookie-modal" tabindex="-1" aria-labelledby="cookie-modal-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <form class="modal-content" data-cookie-form>
