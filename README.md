@@ -2,7 +2,7 @@
 
 This is the optional combined task. The Task 1 page is built into the **Front page** layout of a Boost child theme called `theme_synergylearning`, and the theme also has the two required footer settings.
 
-**Live demo:** <a href="http://moodle.miniarts.uk/" target="_blank" rel="noopener">http://moodle.miniarts.uk/</a>
+**Live demo:** <a href="https://moodle.miniarts.uk/" target="_blank" rel="noopener">https://moodle.miniarts.uk/</a>
 
 It adds:
 
