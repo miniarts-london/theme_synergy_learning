@@ -42,7 +42,7 @@ The footer contents are shown in that order, above the logo and copyright, and e
 
 ## Site home content
 
-- **Catalogue.** The catalogue lists the top-level course categories the current user can see. Each card's image is chosen in this order:
+- **Catalogue.** The catalogue shows up to five top-level course categories the current user can see: one row at desktop width, as in the concept. They appear in the order set under *Site administration > Courses > Manage courses and categories*, and the section's **View all courses** link leads to the full list. The limit is `$maxcards` in `layout/frontpage.php`. Each card's image is chosen in this order:
   1. **An image you upload for the category.** Go to *Site administration > Courses > Manage courses and categories*, edit the category, and insert an image into its **Description** (the editor's image button). The first image in the description is used. It is shown at 72 × 72 px without cropping, and is not inverted in dark mode, so a square PNG or SVG with a transparent background works best. The image also appears in the description on the category's own page.
   2. **The theme's built-in icon**, when the category's ID number is `product`, `business-development`, `optics`, `cpd` or `business-management`.
   3. **A generic icon.**

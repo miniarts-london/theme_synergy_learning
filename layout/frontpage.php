@@ -146,7 +146,9 @@ if ($isloggedin) {
     $hero['hasidentityproviders'] = !empty($hero['identityproviders']);
 }
 
-// Catalogue: the top-level course categories this user can see.
+// Catalogue: the first top-level course categories this user can see, in the order set under
+// Site administration > Courses > Manage courses and categories. The section's "View all courses" link
+// leads to the rest.
 // Each card's image is, in order of preference:
 // 1. the first image in the category's description (Edit category > Description), so admins can upload one per category;
 // 2. the theme's built-in icon matched on the category ID number ($iconnames below);
@@ -154,7 +156,8 @@ if ($isloggedin) {
 $iconnames = ['product', 'business-development', 'optics', 'cpd', 'business-management'];
 $fs = get_file_storage();
 $categories = [];
-foreach (core_course_category::top()->get_children() as $category) {
+$maxcards = 5; // One row of five cards at desktop width, as in the concept.
+foreach (core_course_category::top()->get_children(['limit' => $maxcards]) as $category) {
     $iconurl = null;
     $catcontext = \core\context\coursecat::instance($category->id);
     $images = array_filter(
