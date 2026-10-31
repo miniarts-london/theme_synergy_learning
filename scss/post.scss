@@ -52,11 +52,27 @@
     }
 }
 
+// Text and icons on the brand colour: black or white, whichever reads better (Bootstrap's color-contrast()). Black for
+// the default yellow; white for a dark brand colour such as navy.
+$sl-on-brand: color-contrast($sl-brand, #000, #fff);
+
+// The brand colour used as text on black (the inverted button hover, the video message): the brand colour itself when
+// it is light enough to read there (4.5:1, WCAG AA), otherwise white.
+$sl-brand-on-black: if(contrast-ratio($sl-brand, #000) >= 4.5, $sl-brand, #fff);
+
+// For things drawn in $sl-on-brand's opposite (the highlighted card's button), and the filter that turns the black
+// line icons white when the text on the brand colour is white.
+$sl-on-brand-inverse: if($sl-on-brand == #000, #fff, #000);
+$sl-brand-icon-filter: if($sl-on-brand == #000, none, invert(1));
+
 // Brand tokens as custom properties, re-pointed for Boost's (experimental) dark colour mode.
 :root,
 [data-bs-theme="light"] {
-    --sl-yellow: #{$sl-yellow};
-    --sl-on-yellow: #000;
+    --sl-brand: #{$sl-brand};
+    --sl-on-brand: #{$sl-on-brand};
+    --sl-brand-on-black: #{$sl-brand-on-black};
+    --sl-on-brand-inverse: #{$sl-on-brand-inverse};
+    --sl-brand-icon-filter: #{$sl-brand-icon-filter};
     --sl-ink: #{$sl-ink};
     --sl-body: #{$sl-body};
     --sl-surface-1: #{$sl-surface-1};
@@ -88,27 +104,27 @@
     --#{$prefix}link-hover-color-rgb: 255, 255, 255;
 }
 
-// `.text-primary` would be yellow on white: use Bootstrap's AA-safe emphasis shade instead.
+// `.text-primary` could be unreadable on white (the default yellow is 1.3:1): use Bootstrap's AA-safe emphasis shade instead.
 .text-primary {
     color: var(--#{$prefix}primary-text-emphasis) !important; // stylelint-disable-line declaration-no-important
 }
 
-// Moodle's preset forces white text on a primary-coloured dropdown hover, which is unreadable on yellow.
+// Moodle's preset forces white text on a primary-coloured dropdown hover, which is unreadable on a light brand colour.
 .dropdown-menu {
-    --#{$prefix}dropdown-link-hover-color: #000;
-    --#{$prefix}dropdown-link-active-color: #000;
+    --#{$prefix}dropdown-link-hover-color: #{$sl-on-brand};
+    --#{$prefix}dropdown-link-active-color: #{$sl-on-brand};
 }
 
-// Primary buttons: yellow with black text, inverting on hover (as on the concept's log in button).
+// Primary buttons: the brand colour with readable text, inverting to black on hover (as on the concept's log in button).
 .btn-primary {
-    --#{$prefix}btn-color: #000;
+    --#{$prefix}btn-color: #{$sl-on-brand};
     --#{$prefix}btn-hover-bg: #000;
     --#{$prefix}btn-hover-border-color: #000;
-    --#{$prefix}btn-hover-color: #{$sl-yellow};
+    --#{$prefix}btn-hover-color: #{$sl-brand-on-black};
     --#{$prefix}btn-active-bg: #222;
     --#{$prefix}btn-active-border-color: #222;
-    --#{$prefix}btn-active-color: #{$sl-yellow};
-    --#{$prefix}btn-disabled-color: #000;
+    --#{$prefix}btn-active-color: #{$sl-brand-on-black};
+    --#{$prefix}btn-disabled-color: #{$sl-on-brand};
 }
 
 [data-bs-theme="dark"] .btn-primary {
@@ -117,11 +133,11 @@
     --#{$prefix}btn-hover-color: #000;
 }
 
-// One high-contrast focus indicator on every surface: black outline with a yellow halo.
+// One high-contrast focus indicator on every surface: black outline with a brand-colour halo.
 .btn:focus-visible,
 .form-control:focus,
 .form-select:focus {
-    box-shadow: 0 0 0 .25rem var(--sl-yellow);
+    box-shadow: 0 0 0 .25rem var(--sl-brand);
 }
 
 // Links: replace Boost's pale highlight block (background fill plus underline shadow, in moodle/core.scss) with the
@@ -143,6 +159,6 @@ a:not([class]),
     &:focus-visible {
         outline: 2px solid var(--sl-line);
         outline-offset: 2px;
-        box-shadow: 0 0 0 .3rem var(--sl-yellow);
+        box-shadow: 0 0 0 .3rem var(--sl-brand);
     }
 }

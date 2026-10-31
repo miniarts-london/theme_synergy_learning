@@ -173,7 +173,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     &:focus {
         background-color: var(--#{$prefix}body-bg);
         border-bottom-color: var(--sl-line);
-        box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-yellow);
+        box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-brand);
     }
 
     &.is-invalid {
@@ -304,7 +304,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     justify-content: space-between;
     gap: .5rem 1rem;
     padding-bottom: .5rem;
-    border-bottom: 4px solid var(--sl-yellow);
+    border-bottom: 4px solid var(--sl-brand);
     margin-bottom: 2.25rem;
 
     h2 {
@@ -401,12 +401,12 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
 // Active state – the highlighted "Optics and Manufacturing" card in the concept.
 .sl-card:hover,
 .sl-card:focus-within {
-    background: var(--sl-yellow);
+    background: var(--sl-brand);
     transform: translateY(-.5rem);
     box-shadow: var(--sl-shadow-hover);
 
     .sl-card__title {
-        color: #000;
+        color: var(--sl-on-brand);
     }
 
     .sl-card__icon {
@@ -414,10 +414,16 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
         filter: none;
     }
 
+    // The black line icons turn white on a dark brand colour (uploaded images keep their colours).
+    .sl-card__icon:not(.sl-card__icon--custom) {
+        filter: var(--sl-brand-icon-filter);
+    }
+
+    // The button is the opposite of the card: black on the default yellow, white on a dark brand colour.
     .sl-card__btn {
-        background: #000;
-        border-color: #000;
-        color: #fff;
+        background: var(--sl-on-brand);
+        border-color: var(--sl-on-brand);
+        color: var(--sl-on-brand-inverse);
     }
 }
 
@@ -485,12 +491,12 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     margin: 0 0 2rem;
     padding: 1.25rem 0 0 1.25rem;
 
-    &::before {                     // Yellow offset block.
+    &::before {                     // Brand-colour offset block.
         content: "";
         position: absolute;
         z-index: 0;
         inset: 0 1.5rem 1.5rem 0;
-        background: var(--sl-yellow);
+        background: var(--sl-brand);
     }
 
     @include media-breakpoint-up(md) {
@@ -542,7 +548,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     color: #fff;
 
     &:focus-visible {
-        outline: 3px solid var(--sl-yellow);
+        outline: 3px solid var(--sl-brand);
         outline-offset: -6px;
     }
 
@@ -558,7 +564,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: var(--sl-yellow);
+    background: var(--sl-brand);
     box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .35);
     transition: transform var(--sl-duration) var(--sl-ease);
 
@@ -567,7 +573,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
         margin-left: .3rem;
         border-style: solid;
         border-width: .8rem 0 .8rem 1.3rem;
-        border-color: transparent transparent transparent #000;
+        border-color: transparent transparent transparent var(--sl-on-brand);
     }
 }
 
@@ -599,7 +605,7 @@ $sl-site-home-content: '#page-header, .drawer-toggles button, #user-notification
     color: #fff;
 
     strong {
-        color: var(--sl-yellow);
+        color: var(--sl-brand-on-black);
         font-weight: 600;
     }
 }

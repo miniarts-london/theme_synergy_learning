@@ -49,6 +49,17 @@ if ($ADMIN->fulltree) {
             ]), \core\output\notification::NOTIFY_WARNING, false)
         ));
     }
+    // Brand colour: buttons, the navbar underline, card hover, focus halos and the video block. Text on it switches
+    // between black and white automatically for contrast (see scss/post.scss).
+    $setting = new admin_setting_configcolourpicker(
+        'theme_synergylearning/brandcolour',
+        get_string('brandcolour', 'theme_synergylearning'),
+        get_string('brandcolour_desc', 'theme_synergylearning'),
+        '#ffde00'
+    );
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
     $setting = new admin_setting_configtext(
         'theme_synergylearning/unaddableblocks',
         get_string('unaddableblocks', 'theme_boost'),

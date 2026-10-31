@@ -101,7 +101,7 @@
                 &:focus {
                     background-color: var(--#{$prefix}body-bg);
                     border-bottom-color: var(--sl-line);
-                    box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-yellow);
+                    box-shadow: inset 0 -2px 0 var(--sl-line), 0 0 0 .25rem var(--sl-brand);
                 }
             }
         }
@@ -124,7 +124,7 @@
             &:focus-visible {
                 background-color: transparent;
                 border-color: var(--sl-line);
-                box-shadow: 0 0 0 .25rem var(--sl-yellow);
+                box-shadow: 0 0 0 .25rem var(--sl-brand);
             }
         }
 
@@ -144,7 +144,7 @@
         color: var(--sl-body);
     }
 
-    // The yellow log in button with an arrow, as on the site home.
+    // The brand-colour log in button with an arrow, as on the site home.
     #loginbtn {
         display: inline-flex;
         align-items: center;

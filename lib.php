@@ -45,13 +45,35 @@ function theme_synergylearning_get_main_scss_content(theme_config $theme): strin
 }
 
 /**
- * Pre-SCSS callback: Boost's configurable variables, then anything specific to this theme.
+ * Pre-SCSS callback: Boost's configurable variables, then the Brand colour setting as $sl-brand.
+ *
+ * This runs before scss/pre.scss, whose `$sl-brand: #ffde00 !default;` then keeps the chosen colour.
  *
  * @param theme_config $theme The theme config object.
  * @return string SCSS
  */
 function theme_synergylearning_get_pre_scss(theme_config $theme): string {
-    return theme_boost_get_pre_scss($theme);
+    $scss = theme_boost_get_pre_scss($theme);
+    $colour = theme_synergylearning_brand_colour($theme);
+    if ($colour !== null) {
+        $scss .= '$sl-brand: ' . $colour . ";\n";
+    }
+    return $scss;
+}
+
+/**
+ * The Brand colour setting, if it is a colour the SCSS compiler can safely use.
+ *
+ * The colour picker already validates what the admin types; this check also stops anything else stored in the
+ * setting (for example through the CLI) from being injected into the SCSS.
+ *
+ * @param theme_config $theme The theme config object.
+ * @return string|null A hex, rgb()/rgba(), hsl()/hsla() or named colour, or null to keep the default yellow.
+ */
+function theme_synergylearning_brand_colour(theme_config $theme): ?string {
+    $colour = trim((string) ($theme->settings->brandcolour ?? ''));
+    $pattern = '/^(#[0-9a-f]{3}|#[0-9a-f]{4}|#[0-9a-f]{6}|#[0-9a-f]{8}|(rgba?|hsla?)\([0-9\s.,%deg]+\)|[a-z]+)$/i';
+    return preg_match($pattern, $colour) ? $colour : null;
 }
 
 /**
